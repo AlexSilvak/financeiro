@@ -29,8 +29,8 @@ import {
 // This is sample data.
 const data = {
   user: {
-    name: "shadcn",
-    email: "m@example.com",
+    name: "Financeiro",
+    email: "financeiro@example.com",
     avatar: "/avatars/shadcn.jpg",
   },
   teams: [
@@ -40,39 +40,39 @@ const data = {
       plan: "Enterprise",
     },
     {
-      name: "Acme Corp.",
+      name: "Financeiro Corp.",
       logo: AudioWaveform,
       plan: "Startup",
     },
     {
-      name: "Evil Corp.",
+      name: "Financeiro Corp.",
       logo: Command,
       plan: "Free",
     },
   ],
   navMain: [
     {
-      title: "Playground",
+      title: "Contas a Pagar",
       url: "#",
       icon: SquareTerminal,
-      isActive: true,
+      //isActive: true,
       items: [
         {
-          title: "History",
-          url: "#",
+          title: "Lançamentos",
+          url: "/lancamentos",
         },
         {
-          title: "Starred",
-          url: "#",
+          title: "Baixas",
+          url: "/baixa",
         },
         {
-          title: "Settings",
-          url: "#",
+          title: "Parâmetros",
+          url: "/parametros",
         },
       ],
     },
     {
-      title: "Models",
+      title: "Contas a Receber",
       url: "#",
       icon: Bot,
       items: [
@@ -91,7 +91,34 @@ const data = {
       ],
     },
     {
-      title: "Documentation",
+      title: "Usuários",
+      url: "#",
+      icon: BookOpen,
+      items: [
+        {
+          title: "Consulta",
+          url: "#",
+        },
+        {
+          title: "Cadastro",
+          url: "#",
+        },
+        {
+          title: "Status",
+          url: "#",
+        },
+        {
+          title: "Logs",
+          url: "#",
+        },
+        {
+          title: "Parâmetros",
+          url: "#",
+        },
+      ],
+    },
+    {
+      title: "Investimentos",
       url: "#",
       icon: BookOpen,
       items: [
@@ -114,43 +141,101 @@ const data = {
       ],
     },
     {
-      title: "Settings",
+      title: "Inventário",
       url: "#",
       icon: Settings2,
       items: [
         {
-          title: "General",
+          title: "Produto",
           url: "#",
         },
         {
-          title: "Team",
+          title: "Estoque",
           url: "#",
         },
         {
-          title: "Billing",
+          title: "Categoria",
           url: "#",
         },
         {
-          title: "Limits",
+          title: "Custo",
+          url: "#",
+        },
+        {
+          title: "Preço",
+          url: "#",
+        },
+        {
+          title: "Variações",
+          url: "#",
+        },
+        {
+          title: "Histórico de movimentações",
+          url: "#",
+        },
+        {
+          title: "Cocalização",
           url: "#",
         },
       ],
-    },
+    }
+    ,
+    {
+      title: "Parâmetros Gerais",
+      url: "#",
+      icon: Settings2,
+      items: [
+        {
+          title: "Categorias",
+          url: "#",
+        },
+        {
+          title: "Pessoa",
+          url: "#",
+        },
+        {
+          title: "Formas de Pagamentos",
+          url: "#",
+        },
+        {
+          title: "Juros",
+          url: "#",
+        },
+        {
+          title: "Multa",
+          url: "#",
+        },
+        {
+          title: "Tipo",
+          url: "#",
+        },
+        {
+          title: "Status",
+          url: "#",
+        },
+      ],
+    }
   ],
+  
   projects: [
     {
-      name: "Design Engineering",
+      name: "TI",
       url: "#",
       icon: Frame,
     },
     {
-      name: "Sales & Marketing",
+      name: "Vendas & Marketing",
       url: "#",
       icon: PieChart,
     },
     {
-      name: "Travel",
+      name: "Clientes",
       url: "#",
+      icon: Map,
+    },
+    {
+      name: "Documentação",
+      url: "/documentacao",
       icon: Map,
     },
   ],
