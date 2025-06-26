@@ -62,8 +62,12 @@ const data = {
           url: "/lancamentos",
         },
         {
-          title: "Baixas",
+          title: "Baixar",
           url: "/baixa",
+        },
+        {
+          title: "Consultar",
+          url: "/search",
         },
         {
           title: "Parâmetros",
