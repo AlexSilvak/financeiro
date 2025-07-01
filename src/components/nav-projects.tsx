@@ -62,11 +62,11 @@ export function NavProjects({
               >
                 <DropdownMenuItem>
                   <Folder className="text-muted-foreground" />
-                  <span>Visualisar Projetos</span>
+                  <span>Visualisar Receitas</span>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   <Forward className="text-muted-foreground" />
-                  <span>Compartilhar Projetos</span>
+                  <span>Visualisar Despesas</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem>

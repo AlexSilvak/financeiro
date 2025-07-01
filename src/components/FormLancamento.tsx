@@ -1,13 +1,22 @@
 'use client'
 
-import { useState } from 'react'
+
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Select, SelectTrigger, SelectValue, SelectItem, SelectContent } from '@/components/ui/select'
-import { Textarea } from '@/components/ui/textarea'
 import { toast } from "sonner"
-
+import Search from '@/components/Search'
+import axios from "axios"
+import { useEffect, useState } from "react"
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from "@/components/ui/command"
 interface FormData {
   descricao: string
   forma_de_pagamento: string
@@ -19,8 +28,12 @@ interface FormData {
   multa: string
   juros: string
 }
-
+interface Categoria {
+  id: number
+  nome: string
+}
 export default function FormLancamento() {
+   const [data, setData] = useState<Categoria[]>([])
   const [formData, setFormData] = useState<FormData>({
     descricao: '',
     forma_de_pagamento: '',
@@ -58,9 +71,14 @@ export default function FormLancamento() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     })
+    const dataCategorias=await fetch('/api/categorias', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' }
+      
+    })
 
     if (res.ok) {
-      toast.success('Lançamento salvo com sucesso!')
+      toast.success('Lançamento salvo com sucesso!',{description:formData.descricao})
       setFormData({
         descricao: '',
         forma_de_pagamento: '',
@@ -76,7 +94,18 @@ export default function FormLancamento() {
       toast.error('Erro ao salvar lançamento.')
     }
   }
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("/api/categorias")
+        setData(response.data.categoria) // ✅ agora funciona!
+      } catch (error) {
+        console.error("Erro ao buscar categorias", error)
+      }
+    }
 
+    fetchData()
+  }, [])
   return (
     <form onSubmit={handleSubmit} className="space-y-4 max-w-xl p-4 m-auto">
       <div>
@@ -118,7 +147,7 @@ export default function FormLancamento() {
       </div>
 
       <div>
-        <Label className="p-2">Categoria</Label>
+        
         <Input name="categoria" value={formData.categoria} onChange={handleChange} required />
       </div>
 

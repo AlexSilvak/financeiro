@@ -1,6 +1,9 @@
 // src/models/categorias.ts
 
 import mongoose, { Schema, Document } from 'mongoose';
+// Descricação
+// Na categoria deve ser cadastro apenas tipos de gastos ex: Lazer, Academia, Combustível...
+// Deve ser resumida em apenas uma palavra
 
 export interface ICategoria extends Document {
   nome: string;

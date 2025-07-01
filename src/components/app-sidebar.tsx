@@ -66,12 +66,39 @@ const data = {
           url: "/baixa",
         },
         {
+          title: "Payment",
+          url: "/payments",
+        },
+        {
           title: "Consultar",
           url: "/search",
         },
         {
+          title: "Dashboard",
+          url: "/dashboard",
+        },
+        {
           title: "Parâmetros",
           url: "/parametros",
+        },
+      ],
+    },
+    {
+      title: "Dashboards",
+      url: "",
+      icon: Bot,
+      items: [
+        {
+          title: "Despesas",
+          url: "/dashboard",
+        },
+        {
+          title: "Explorer",
+          url: "#",
+        },
+        {
+          title: "Quantum",
+          url: "#",
         },
       ],
     },
@@ -223,12 +250,12 @@ const data = {
   
   projects: [
     {
-      name: "TI",
+      name: "Empresas",
       url: "#",
       icon: Frame,
     },
     {
-      name: "Vendas & Marketing",
+      name: "Dashboard",
       url: "#",
       icon: PieChart,
     },

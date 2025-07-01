@@ -44,7 +44,7 @@ export default function search() {
   const [_id,setId]=useState([])
 
 
-   useEffect(()=>{
+   useEffect(()=>{0
 
    const fetchData=async()=>{
   
@@ -95,7 +95,7 @@ export default function search() {
    
    
 
-   <Table  className="table-auto">
+      <Table  className="table-auto">
       
       <TableCaption>page</TableCaption>
       <TableHeader>
@@ -176,7 +176,6 @@ export default function search() {
        }
       
     </Table>
-  
     
 
    
