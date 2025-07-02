@@ -30,7 +30,7 @@ interface Categoria {
 
 export default function FormLancamento() {
    const [data, setData] = useState<Categoria[]>([])
-  const [formData, setFormData] = useState<FormData>({
+   const [formData, setFormData] = useState<FormData>({
     descricao: '',
     forma_de_pagamento: '',
     valor: '',
@@ -86,6 +86,7 @@ export default function FormLancamento() {
       toast.error('Erro ao salvar lançamento.')
     }
   }
+  // usado para listagem de categoria no dropdown
   useEffect(() => {
     const fetchData = async () => {
       try {

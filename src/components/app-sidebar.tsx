@@ -241,6 +241,10 @@ const data = {
           title: "Status",
           url: "#",
         },
+        {
+          title: "Backup Banco de dados",
+          url: "/backup",
+        },
       ],
     }
   ],

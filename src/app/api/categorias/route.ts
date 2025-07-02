@@ -3,25 +3,14 @@ import Categoria from '@/models/categorias';
 import { connectDB } from '@/lib/mongodb'; // sua função de conexão
 
 // 🔹 GET /api/categorias - Lista todas as categorias (do sistema e do usuário)
-export async function GET(req: NextRequest) {
+export async function GET() {
+  await connectDB()
+
   try {
-    await connectDB();
-
-    const { searchParams } = new URL(req.url);
-    const usuario_id = searchParams.get('usuario_id');
-
-    // Lista categorias padrão do sistema (fixas) + do usuário
-    const categorias = await Categoria.find({
-      $or: [
-        { fixa: true },
-        { usuario_id: usuario_id },
-      ],
-    }).sort({ nome: 1 });
-
-    return NextResponse.json({ categorias });
+    const categorias = await Categoria.find().lean()
+    return NextResponse.json({ success: true, data: categorias })
   } catch (error) {
-    console.error('Erro ao buscar categorias:', error);
-    return NextResponse.json({ error: 'Erro ao buscar categorias' }, { status: 500 });
+    return NextResponse.json({ success: false, error: String(error) }, { status: 500 })
   }
 }
 
