@@ -1,14 +1,23 @@
 'use client'
 
-
+import React from "react";
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Select,SelectLabel, SelectTrigger, SelectValue, SelectItem, SelectContent, SelectGroup } from '@/components/ui/select'
 import { toast } from "sonner"
-import axios from "axios"
 import { useEffect, useState } from "react"
-
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { Plus } from 'lucide-react';
 interface FormData {
   descricao: string
   forma_de_pagamento: string
@@ -20,6 +29,7 @@ interface FormData {
   multa: string
   juros: string
 }
+
 interface Categoria {
   _id: string
   nome: string
@@ -70,7 +80,7 @@ export default function FormLancamento() {
     
 
     if (res.ok) {
-      toast.success('Lançamento salvo com sucesso!',{description:formData.descricao})
+      toast.success('Lançamento salvo com sucesso!')
       setFormData({
         descricao: '',
         forma_de_pagamento: '',
@@ -88,31 +98,41 @@ export default function FormLancamento() {
   }
   // usado para listagem de categoria no dropdown
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("/api/categorias",{params:{usuario_id:'1234567890abcdef'}})
-        setData(response.data.categorias) // ✅ agora funciona!
-        console.log(response.data.categorias)
-      } catch (error) {
-        console.error("Erro ao buscar categorias", error)
-      }
-    }
-
-    fetchData()
+    const usuario_id = '1234567890abcdef' // ou pegue do auth/context
+  
+    fetch(`/api/categorias?usuario_id=${usuario_id}`)
+      .then((res) => res.json())
+      .then((res) => {
+        console.log( res.data)
+        if (res.success) setData(res.data)
+      })
   }, [])
 
 
  
   return (
+    <div className="p-6">
+   
+
     
-    <form onSubmit={handleSubmit} className="space-y-4 max-w-xl p-4 m-auto">
+    <Dialog>
       
-      <div>
+        <DialogTrigger asChild>
+          <Button variant="outline"><Plus />Novo</Button>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[425px]">
+        <form onSubmit={handleSubmit} className="space-y-4 max-w-xl p-4 m-auto">
+          <DialogHeader>
+            <DialogTitle>Lançamento</DialogTitle>
+           
+          </DialogHeader>
+           
+          <div className="grid gap-4">
+          <div>
         <Label className="p-2">Descrição</Label>
         <Input name="descricao" value={formData.descricao} onChange={handleChange} required />
       </div>
-
-      <div>
+            <div>
         <Label className="p-2">Forma de Pagamento</Label>
         <Select value={formData.forma_de_pagamento} onValueChange={(v:string) => handleSelectChange('forma_de_pagamento', v)}>
           <SelectTrigger>
@@ -126,13 +146,11 @@ export default function FormLancamento() {
           </SelectContent>
         </Select>
       </div>
-
-      <div>
-        <Label className="p-2">Valor</Label>
-        <Input name="valor" type="number" value={formData.valor} onChange={handleChange} required />
-      </div>
-
-      <div>
+            <div className="grid gap-3">
+              <Label htmlFor="username-1">Valor</Label>
+              <Input name="valor" type="number" value={formData.valor} onChange={handleChange} required  />
+            </div>
+            <div>
         <Label className="p-2">Tipo</Label>
         <Select value={formData.tipo} onValueChange={(v: string) => handleSelectChange('tipo', v)}>
           <SelectTrigger>
@@ -144,49 +162,42 @@ export default function FormLancamento() {
           </SelectContent>
         </Select>
       </div>
-
-
       <div>
 
-      <Label className="p-2">Categoria</Label>
+<Label className="p-2">Categoria</Label>
 
 <Select
-  value={formData.categoria}
-  onValueChange={(v: string) => handleSelectChange("categoria", v)}
+value={formData.categoria}
+onValueChange={(v: string) => handleSelectChange("categoria", v)}
 >
-  <SelectTrigger className="w-full">
-    <SelectValue placeholder="Selecione uma categoria" />
-  </SelectTrigger>
-  
-  <SelectContent>
-  <SelectGroup>
-    {data.map((grup)=>{
-     return (
-     <>
-      <SelectItem value={grup.nome} key={grup._id}>{grup.nome}</SelectItem>
-     <SelectLabel  >{grup.descricao}</SelectLabel>
-    
-     </>
-     
-      )
+<SelectTrigger className="w-full">
+<SelectValue placeholder="Selecione uma categoria" />
+</SelectTrigger>
 
-    })}
-  
-  </SelectGroup>
-   
-  </SelectContent>
- 
+<SelectContent>
+<SelectGroup>
+{data.map((grup)=>{
+return (
+<React.Fragment key={grup._id}>
+<SelectItem value={grup.nome}>{grup.nome}</SelectItem>
+<SelectLabel  >{grup.descricao}</SelectLabel>
 
-  
+</React.Fragment>
+
+)
+
+})}
+
+</SelectGroup>
+
+</SelectContent>
+
 </Select>
+</div>
+            <div className="grid grid-cols-2 gap-4">
+        
 
-      </div>
-      
-      
-      
-
-       
-      <div>
+        <div>
         <Label className="p-2">Data de Vencimento</Label>
         <Input name="data_vencimento" type="date" value={formData.data_vencimento} onChange={handleChange} required />
       </div>
@@ -195,9 +206,7 @@ export default function FormLancamento() {
         <Label className="p-2">Data de Pagamento</Label>
         <Input name="data_pagamento" type="date" value={formData.data_pagamento} onChange={handleChange} />
       </div>
-
-      <div className="grid grid-cols-2 gap-4">
-        <div>
+      <div>
           <Label className="p-2">Multa</Label>
           <Input name="multa" type="number" value={formData.multa} onChange={handleChange} />
         </div>
@@ -207,9 +216,21 @@ export default function FormLancamento() {
           <Input name="juros" type="number" value={formData.juros} onChange={handleChange} />
         </div>
       </div>
-
-      <Button type="submit" className="w-full p-2">Salvar Lançamento</Button>
-    </form>
+          </div>
+          <DialogFooter>
+            <DialogClose asChild>
+              <Button variant="outline">Cancelar</Button>
+            </DialogClose>
+            <Button type="submit">Salva</Button>
+          </DialogFooter>
+          </form>
+        </DialogContent>
+     
+    </Dialog>
+    
+    
+    </div>
+    
   )
 }
 

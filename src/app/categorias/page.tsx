@@ -31,6 +31,9 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { Plus } from 'lucide-react';
+
+
 interface FormData {
   nome: string
   tipo: 'despesa' | 'receita' | ''
@@ -142,8 +145,8 @@ export default function Page() {
    
     <div className="p-6">
        <Dialog>
-      <DialogTrigger asChild>
-        <Button variant="outline">Nova Categoria</Button>
+       <DialogTrigger asChild>
+        <Button variant="outline"><Plus />Novo</Button>
       </DialogTrigger>
 
       <DialogContent className="sm:max-w-[425px]">
@@ -153,7 +156,7 @@ export default function Page() {
             <DialogDescription />
           </DialogHeader>
 
-          <div className="grid gap-4">
+          <div className="grid gap-3 mt-3 ">
             <div className="grid gap-3">
               <Label htmlFor="nome">Nome</Label>
               <Input
@@ -190,9 +193,10 @@ export default function Page() {
               />
             </div>
 
-            <div className="grid gap-3">
+            <div className="grid gap-3 ">
               <Label htmlFor="cor">Cor</Label>
               <Input
+                className=""
                 type="color"
                 id="cor"
                 value={formData.cor || '#000000'}
@@ -200,13 +204,15 @@ export default function Page() {
               />
             </div>
           </div>
-
+          <div className="grid gap-3 mt-3 ">
           <DialogFooter>
             <DialogClose asChild>
               <Button variant="outline">Cancelar</Button>
             </DialogClose>
-            <Button type="submit">Salvar</Button>
+            <Button type="submit" >Salvar</Button>
           </DialogFooter>
+          </div>
+       
         </form>
       </DialogContent>
     </Dialog>
