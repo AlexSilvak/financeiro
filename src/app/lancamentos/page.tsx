@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/button'
 import { Label } from '@/components/ui/label'
 import { Select,SelectLabel, SelectTrigger, SelectValue, SelectItem, SelectContent, SelectGroup } from '@/components/ui/select'
 import { toast } from "sonner"
-import Search from '@/components/Search'
 import axios from "axios"
 import { useEffect, useState } from "react"
 
@@ -68,11 +67,7 @@ export default function FormLancamento() {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     })
-    const dataCategorias=await fetch('/api/categorias', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' }
-      
-    })
+    
 
     if (res.ok) {
       toast.success('Lançamento salvo com sucesso!',{description:formData.descricao})
@@ -118,7 +113,7 @@ export default function FormLancamento() {
 
       <div>
         <Label className="p-2">Forma de Pagamento</Label>
-        <Select value={formData.forma_de_pagamento} onValueChange={(v:any) => handleSelectChange('forma_de_pagamento', v)}>
+        <Select value={formData.forma_de_pagamento} onValueChange={(v:string) => handleSelectChange('forma_de_pagamento', v)}>
           <SelectTrigger>
             <SelectValue placeholder="Selecione a forma de pagamento" />
           </SelectTrigger>
@@ -138,7 +133,7 @@ export default function FormLancamento() {
 
       <div>
         <Label className="p-2">Tipo</Label>
-        <Select value={formData.tipo} onValueChange={(v:any) => handleSelectChange('tipo', v)}>
+        <Select value={formData.tipo} onValueChange={(v: string) => handleSelectChange('tipo', v)}>
           <SelectTrigger>
             <SelectValue placeholder="Selecione o tipo" />
           </SelectTrigger>

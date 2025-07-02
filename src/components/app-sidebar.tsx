@@ -62,6 +62,10 @@ const data = {
           url: "/lancamentos",
         },
         {
+          title: "Categorias",
+          url: "/categorias",
+        },
+        {
           title: "Baixar",
           url: "/baixa",
         },
@@ -154,21 +158,14 @@ const data = {
       icon: BookOpen,
       items: [
         {
-          title: "Introduction",
+          title: "Fundos Imobiliários",
           url: "#",
         },
         {
-          title: "Get Started",
+          title: "CDB",
           url: "#",
         },
-        {
-          title: "Tutorials",
-          url: "#",
-        },
-        {
-          title: "Changelog",
-          url: "#",
-        },
+        
       ],
     },
     {
@@ -205,7 +202,7 @@ const data = {
           url: "#",
         },
         {
-          title: "Cocalização",
+          title: "Veiculos",
           url: "#",
         },
       ],
