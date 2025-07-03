@@ -9,6 +9,8 @@ const DB_NAME = 'financeirodb'
 const MONGO_URI = 'mongodb://localhost:27017'
 const BACKUP_DIR = path.join(process.cwd(), 'backups')
 
+
+
 export async function GET() {
     await connectDB()
   
