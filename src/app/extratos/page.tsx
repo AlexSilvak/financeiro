@@ -1,9 +1,9 @@
 
 
-export default function Home() {
+export default function Page() {
   return (
     <div className="">
-      <h1>oi</h1>
+      
     </div>
   );
 }

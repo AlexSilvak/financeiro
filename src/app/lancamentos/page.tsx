@@ -109,21 +109,67 @@ export default function FormLancamento() {
   }, [])
 
 
- 
+ // tuple  
+let tuple: [string, number] = ["titulo",30]
+
+enum status_pag{
+  pedendete, 
+  pago,
+  recebido
+}
+enum recorrencia{
+  semanal,
+  mensal,
+  anual
+}
+// enum 
+enum categoria{
+  receita,
+  despesa
+}
+
+let categoria_financeira : categoria
+//union
+let id: 123 | string ='Alex'
+
+// intersection
+type super_usuario ={role:string}
+type usuario={name:string}
+type administrador=super_usuario & usuario
+
+let super_usuario: administrador={role:'Gerente', name:'Alex'}
+
+// tipos literais
+let status :"Sucesso" | "Error" |"Carregando" | "Sucesso"
+
+ type ID =string | number
+
+let userID : ID ='123'
+
+interface user{
+  name:string,
+  saldo: number
+}
+
+interface Admin extends user{
+  role: string
+}
+
+let admin : Admin={name:'Alex',saldo: 10000, role: 'Manager'}
   return (
     <div className="p-6">
    
-
+   <Label htmlFor="name-1">#1564648</Label>
     
     <Dialog>
       
         <DialogTrigger asChild>
-          <Button variant="outline"><Plus />Novo</Button>
+          <Button variant="outline"><Plus />Novo Lançamento</Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-[425px]">
         <form onSubmit={handleSubmit} className="space-y-4 max-w-xl p-4 m-auto">
           <DialogHeader>
-            <DialogTitle>Lançamento</DialogTitle>
+            <DialogTitle>Novo Lançamento</DialogTitle>
            
           </DialogHeader>
            
@@ -195,7 +241,15 @@ return (
 </Select>
 </div>
             <div className="grid grid-cols-2 gap-4">
+            <div className="grid gap-3">
+              <Label htmlFor="username-1"> CPF/CNPJ Pagador </Label>
+              <Input id="username-1" name="username" defaultValue="@peduarte" />
+            </div>
         
+            <div className="grid gap-3">
+              <Label htmlFor="username-1">CPF/CNPJ Recebedor </Label>
+              <Input id="username-1" name="username" defaultValue="@peduarte" />
+            </div>
 
         <div>
         <Label className="p-2">Data de Vencimento</Label>

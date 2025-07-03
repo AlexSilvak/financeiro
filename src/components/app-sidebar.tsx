@@ -246,6 +246,45 @@ const data = {
           url: "/backup",
         },
       ],
+    },
+    {
+      title: "Automação",
+      url: "#",
+      icon: Settings2,
+      items: [
+        {
+          title: "Processar Extratos",
+          url: "/extratos",
+        },
+        {
+          title: "Pessoa",
+          url: "#",
+        },
+        {
+          title: "Formas de Pagamentos",
+          url: "#",
+        },
+        {
+          title: "Juros",
+          url: "#",
+        },
+        {
+          title: "Multa",
+          url: "#",
+        },
+        {
+          title: "Tipo",
+          url: "#",
+        },
+        {
+          title: "Status",
+          url: "#",
+        },
+        {
+          title: "Backup Banco de dados",
+          url: "/backup",
+        },
+      ],
     }
   ],
   

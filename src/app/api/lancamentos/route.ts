@@ -25,7 +25,7 @@ export async function POST(req:NextRequest ){
             usuario_id,
             data_criacao,
         }=body;
-            if(!descricao || !valor || !tipo || !categoria || !data_vencimento || !usuario_id || !forma_de_pagamento){
+            if(!descricao || !valor || !tipo || !categoria  ){
                 return NextResponse.json({error:'Campos obrigatório ausentes'},{status:400});
 
             }
