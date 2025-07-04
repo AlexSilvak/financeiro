@@ -31,7 +31,7 @@ const data = {
   user: {
     name: "Financeiro",
     email: "financeiro@example.com",
-    avatar: "/avatars/shadcn.jpg",
+    avatar: "",
   },
   teams: [
     {
@@ -76,6 +76,10 @@ const data = {
         {
           title: "Payment",
           url: "/payments",
+        },
+        {
+          title: "Planos",
+          url: "/planos",
         },
         {
           title: "Consultar",

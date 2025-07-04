@@ -31,8 +31,17 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { Plus } from 'lucide-react';
 
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Trash2, Pencil, Printer, Plus } from "lucide-react"
+import { DotsVerticalIcon } from "@radix-ui/react-icons"
 
 interface FormData {
   nome: string
@@ -68,7 +77,22 @@ export default function Page() {
       })
   }, [])
   
-
+  const handleDelete = async (id: string) => {
+    const confirm = window.confirm("Tem certeza que deseja deletar esta categoria?")
+    if (!confirm) return
+   
+    const res = await fetch(`/api/categorias/${id}`, {
+      method: 'DELETE',
+    })
+  
+    if (res.ok) {
+      toast.success("Categoria deletada com sucesso!")
+      setData((prev) => prev.filter((cat) => cat._id !== id))
+    } else {
+      toast.error("Erro ao deletar categoria.")
+    }
+  }
+  
   const handleChange = (field: keyof FormData, value: string) => {
     setFormData((prev) => ({
       ...prev,
@@ -98,6 +122,10 @@ export default function Page() {
       toast.error('Erro ao salvar categoria.')
     }
   }
+
+
+
+  //table
   const columns: ColumnDef<Categoria>[] = [
     {
       header: 'Nome',
@@ -119,13 +147,29 @@ export default function Page() {
     {
       header: 'Descrição',
       accessorKey: 'descricao',
-    }
+    },
+    
+    {
+      header: 'Ações',
+      accessorKey: 'acoes',
+      cell: ({  }) => (
+        <span
+          className={`ml'
+          }`}
+        >
+          
+        </span>
+      )
+      
+    },
   ]
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
   })
+
+
   return (
    
     <div className="p-6">
@@ -178,6 +222,8 @@ export default function Page() {
               />
             </div>
 
+            
+
           
           </div>
           <div className="grid gap-3 mt-3 ">
@@ -213,7 +259,26 @@ export default function Page() {
               <TableCell key={cell.id}>
                 {flexRender(cell.column.columnDef.cell, cell.getContext())}
               </TableCell>
+              
             ))}
+            <TableCell>
+              <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button variant="ghost"><DotsVerticalIcon/></Button>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent className="p-2 ml-4" align="center">
+        
+          <DropdownMenuGroup>
+            <DropdownMenuItem><Pencil/>Delete</DropdownMenuItem>
+            <DropdownMenuItem><Printer/>Imprimir</DropdownMenuItem>
+            <DropdownMenuItem className="text-red-600" onClick={() => handleDelete(row.original._id)}>
+  <Trash2 className="mr-2 h-4 w-4" /> Deletar
+</DropdownMenuItem>
+
+          </DropdownMenuGroup>
+        </DropdownMenuContent>
+        </DropdownMenu>
+              </TableCell>
           </TableRow>
         ))}
       </TableBody>

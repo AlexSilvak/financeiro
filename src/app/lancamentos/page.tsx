@@ -16,18 +16,22 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
-import { Plus } from 'lucide-react';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import { DotsVerticalIcon } from "@radix-ui/react-icons"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
 
-
-
-
-
-
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Trash2, Pencil, Printer, Plus } from "lucide-react"
 
 
 
 interface FormData {
+  _id:string
   descricao: string
   forma_de_pagamento: string
   valor: string
@@ -37,6 +41,8 @@ interface FormData {
   data_pagamento: string
   multa: string
   juros: string
+  parcela:string
+  
 }
 
 interface Categoria {
@@ -53,6 +59,10 @@ type Lancamento = {
   tipo: "despesa" | "receita"
   categoria: string
   data_vencimento: string
+  status:string
+  juros:string
+  multa:string
+  parcela:string
 }
 
 
@@ -64,6 +74,7 @@ export default function FormLancamento() {
    const [lancamentos, setLancamentos] = useState<Lancamento[]>([])
    const [data, setData] = useState<Categoria[]>([])
    const [formData, setFormData] = useState<FormData>({
+    _id:'',
     descricao: '',
     forma_de_pagamento: '',
     valor: '',
@@ -73,7 +84,42 @@ export default function FormLancamento() {
     data_pagamento: '',
     multa: '',
     juros: '',
+    parcela:'',
   })
+  
+  
+  
+
+
+  const handleDelete = async (id: string) => {
+    const confirm = window.confirm("Tem certeza que deseja deletar esta lançamento?")
+    
+    toast("Event has been created", {
+        description: "Tem certeza que deseja deletar esta lançamento?",
+        action: {
+          label: "Sim",
+          onClick: () => console.log("Undo"),
+        },
+      })
+    
+  
+    if (!confirm) return
+  
+    const res = await fetch(`/api/lancamentos/${id}`, {
+      method: 'DELETE',
+    })
+  
+    if (res.ok) {
+      toast.success("Lançamento deletada com sucesso!")
+      
+      setData((prev) => prev.filter((cat) => cat._id !== id))
+      fetchLancamentos()
+    } else {
+      toast.error("Erro ao deletar Lançamento.")
+    }
+  }
+  
+  
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
@@ -92,6 +138,7 @@ export default function FormLancamento() {
       valor: parseFloat(formData.valor),
       multa: parseFloat(formData.multa) || 0,
       juros: parseFloat(formData.juros) || 0,
+      parcela: parseFloat(formData.parcela),
       usuario_id: '0', // substitua depois
     }
 
@@ -104,7 +151,9 @@ export default function FormLancamento() {
 
     if (res.ok) {
       toast.success('Lançamento salvo com sucesso!')
+      
       setFormData({
+        _id:'',
         descricao: '',
         forma_de_pagamento: '',
         valor: '',
@@ -114,8 +163,10 @@ export default function FormLancamento() {
         data_pagamento: '',
         multa: '',
         juros: '',
+        parcela:''
       })
       setOpen(false)
+      fetchLancamentos()
     } else {
       toast.error('Erro ao salvar lançamento.')
     }
@@ -143,6 +194,7 @@ const fetchLancamentos = async () => {
 
 useEffect(() => {
   fetchLancamentos()
+  
 }, [])
 
 
@@ -150,11 +202,41 @@ useEffect(() => {
   return (
     <div className="p-6">
    
-   <div className="p-2">
-    <Label htmlFor="name-1">#Francisco Alex da Silva Queiroz  CPF:097.732.929-94</Label>
-   </div>
+   <div className="grid gap-4 ">
+   <Label htmlFor="name-1">Nome:<span className="inline-flex items-center rounded-md bg-gray-50  py-1 text-xs font-medium text-gray-600 ring-1 ring-gray-500/10 ring-inset px-4 p-0 ">Francisco Alex da Silva Queiroz </span> CPF/CNPJ:<span className="inline-flex items-center rounded-md bg-gray-50  py-1 text-xs font-medium text-gray-600 ring-1 ring-gray-500/10 ring-inset px-4 p-0 ">097.732.929-94</span></Label>
+   <Label htmlFor="name-1"> </Label>
     
-    <Dialog open={open} onOpenChange={setOpen}>
+   </div>
+   
+    <div className="mt-6">
+      
+  <h2 className="text-lg font-semibold mb-2">Lançamentos</h2>
+  
+  <div className="flex flex-wrap gap-4 items-center mt-4">
+  <Input
+    placeholder="🔍 Buscar por nome do backup..."
+    
+    className="max-w-xs"
+  />
+  <div className="flex gap-2 items-center">
+    <label className="text-sm text-muted-foreground">Início:</label>
+    <Input
+      type="date"
+      
+      className="w-fit"
+    />
+  </div>
+  <div className="flex gap-2 items-center">
+    <label className="text-sm text-muted-foreground">Fim:</label>
+    <Input
+      type="date"
+     
+      className="w-fit"
+    />
+  </div>
+  <div className="flex gap-2 items-center">
+  <div className="">
+    <Dialog       open={open} onOpenChange={setOpen}>
       
         <DialogTrigger asChild>
           <Button variant="outline"><Plus />Novo Lançamento</Button>
@@ -165,10 +247,11 @@ useEffect(() => {
             <DialogTitle>Novo Lançamento</DialogTitle>
            
           </DialogHeader>
-           
-          <div className="grid gap-4">
+         
+          <div className="grid gap-4 ">
           <div>
-        <Label className="p-2">Descrição</Label>
+            
+        <Label className="p-2 ">Descrição</Label>
         <Input name="descricao" value={formData.descricao} onChange={handleChange} required />
       </div>
             <div>
@@ -233,33 +316,31 @@ return (
 
 </Select>
 </div>
-            <div className="grid grid-cols-2 gap-4">
-            <div className="grid gap-3">
-              <Label htmlFor="username-1"> CPF/CNPJ Pagador </Label>
-              <Input id="username-1" name="username" defaultValue="@peduarte" />
-            </div>
-        
-            <div className="grid gap-3">
-              <Label htmlFor="username-1">CPF/CNPJ Recebedor </Label>
-              <Input id="username-1" name="username" defaultValue="@peduarte" />
-            </div>
+            <div className="grid grid-cols-2 gap-2">
+          
+           
 
         <div>
-        <Label className="p-2">Data de Vencimento</Label>
+        <Label className="p-1">Data de Vencimento</Label>
         <Input name="data_vencimento" type="date" value={formData.data_vencimento} onChange={handleChange} required />
       </div>
 
       <div>
-        <Label className="p-2">Data de Pagamento</Label>
+        <Label className="p-1">Data de Pagamento</Label>
         <Input name="data_pagamento" type="date" value={formData.data_pagamento} onChange={handleChange} />
       </div>
       <div>
-          <Label className="p-2">Multa</Label>
+          <Label className="p-1">Multa</Label>
           <Input name="multa" type="number" value={formData.multa} onChange={handleChange} />
         </div>
 
         <div>
-          <Label className="p-2">Juros</Label>
+          <Label className="p-1">Juros</Label>
+          <Input name="juros" type="number" value={formData.juros} onChange={handleChange} />
+        </div>
+
+        <div>
+          <Label className="p-1">Parcela</Label>
           <Input name="juros" type="number" value={formData.juros} onChange={handleChange} />
         </div>
       </div>
@@ -274,17 +355,20 @@ return (
         </DialogContent>
      
     </Dialog>
-    <div className="mt-6">
-  <h2 className="text-lg font-semibold mb-2">Lançamentos Cadastrados</h2>
-  <div className="rounded-md border">
+    </div>
+  </div>
+</div>
+  <div className="rounded-md border mt-2">
     <Table>
       <TableHeader>
         <TableRow>
           <TableHead>Descrição</TableHead>
-          <TableHead>Tipo</TableHead>
           <TableHead>Valor</TableHead>
+          <TableHead>Parcela</TableHead>
+          <TableHead>Tipo</TableHead>
           <TableHead>Categoria</TableHead>
-          <TableHead>Forma</TableHead>
+          <TableHead>Pagamento</TableHead>
+          <TableHead>Status</TableHead>
           <TableHead>Vencimento</TableHead>
         </TableRow>
       </TableHeader>
@@ -292,11 +376,32 @@ return (
         {lancamentos.map(l => (
           <TableRow key={l._id}>
             <TableCell>{l.descricao}</TableCell>
-            <TableCell className={l.tipo === "receita" ? "text-green-600" : "text-red-600"}>{l.tipo}</TableCell>
             <TableCell>R$ {l.valor.toFixed(2)}</TableCell>
+            <TableCell >{l.parcela}</TableCell>
+            <TableCell className={l.tipo === "receita" ? "text-green-600" : "text-red-600" }>{l.tipo}</TableCell>
             <TableCell>{l.categoria}</TableCell>
             <TableCell>{l.forma_de_pagamento}</TableCell>
+            <TableCell className={l.status === "pago" ? "text-green-600" : "text-red-600" }>{l.status}</TableCell>
             <TableCell>{new Date(l.data_vencimento).toLocaleDateString("pt-BR")}</TableCell>
+            <TableCell>
+            <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost"><DotsVerticalIcon/></Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="p-2 ml-4" align="center">
+      
+        <DropdownMenuGroup>
+          <DropdownMenuItem><Pencil/>Editar</DropdownMenuItem>
+          <DropdownMenuItem><Printer/>Imprimir</DropdownMenuItem>
+          
+          <DropdownMenuItem className="text-red-600" onClick={() => handleDelete(l._id)}>
+  <Trash2 className="h-4 w-4" /> Deletar
+</DropdownMenuItem>
+
+        </DropdownMenuGroup>
+      </DropdownMenuContent>
+      </DropdownMenu>
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>

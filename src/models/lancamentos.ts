@@ -13,6 +13,7 @@ export interface ILancamento extends Document {
   status: 'pendente' | 'pago' | 'recebido'; // depende do tipo
   multa?: number;
   juros?: number;
+  parcela:number;
   valor_total_pago?: number;
   observacoes?: string;
   recorrente?: boolean;
@@ -27,17 +28,14 @@ const LancamentoSchema: Schema = new Schema({
   tipo: { type: String, required: true, enum: ['despesa', 'receita'] },
   categoria: { type: String, required: true, trim: true },
   data_vencimento: { type: Date, required: true },
-
   data_pagamento: { type: Date, default: null },
   status: { type: String, enum: ['pendente', 'pago', 'recebido'], default: 'pendente' },
-
   multa: { type: Number, default: 0 },
   juros: { type: Number, default: 0 },
+  parcela: { type: Number, default: 0 },
   valor_total_pago: { type: Number, default: 0 },
-
   observacoes: { type: String, default: '', trim: true },
   recorrente: { type: Boolean, default: false },
-
   data_criacao: { type: Date, default: Date.now },
   usuario_id: { type:  String, required: true },
 });
