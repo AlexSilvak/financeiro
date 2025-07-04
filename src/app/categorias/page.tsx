@@ -38,7 +38,6 @@ interface FormData {
   nome: string
   tipo: 'despesa' | 'receita' | ''
   descricao: string
-  cor: string
   usuario_id: string
 }
 type Categoria = {
@@ -46,16 +45,15 @@ type Categoria = {
   nome: string
   tipo: 'receita' | 'despesa'
   descricao: string
-  cor: string
   usuario_id: string
 }
 export default function Page() {
+   const [open, setOpen] = useState(false)
   const [data, setData] = useState<Categoria[]>([])
   const [formData, setFormData] = useState<FormData>({
     nome: "",
     tipo: "",
     descricao: "",
-    cor: "#000000",
     usuario_id: "1234567890abcdef",
   })
 
@@ -93,9 +91,9 @@ export default function Page() {
         nome: '',
         tipo: '',
         descricao: '',
-        cor: '#000000',
         usuario_id: '1234567890abcdef',
       })
+      setOpen(false)
     } else {
       toast.error('Erro ao salvar categoria.')
     }
@@ -121,20 +119,7 @@ export default function Page() {
     {
       header: 'Descrição',
       accessorKey: 'descricao',
-    },
-    {
-      header: 'Cor',
-      accessorKey: 'cor',
-      cell: ({ row }) => (
-        <div className="flex items-center gap-2">
-          <div
-            className="w-4 h-4 rounded-full border"
-            style={{ backgroundColor: row.original.cor }}
-          />
-          <span>{row.original.cor}</span>
-        </div>
-      ),
-    },
+    }
   ]
   const table = useReactTable({
     data,
@@ -144,10 +129,10 @@ export default function Page() {
   return (
    
     <div className="p-6">
-       <Dialog>
-       <DialogTrigger asChild>
-        <Button variant="outline"><Plus />Novo</Button>
-      </DialogTrigger>
+       <Dialog open={open} onOpenChange={setOpen}>
+       <div className="p-2"> <DialogTrigger asChild>
+        <Button variant="outline"><Plus />Nova Categoria</Button>
+      </DialogTrigger></div>
 
       <DialogContent className="sm:max-w-[425px]">
         <form onSubmit={handleSubmit}>
@@ -193,16 +178,7 @@ export default function Page() {
               />
             </div>
 
-            <div className="grid gap-3 ">
-              <Label htmlFor="cor">Cor</Label>
-              <Input
-                className=""
-                type="color"
-                id="cor"
-                value={formData.cor || '#000000'}
-                onChange={(e) => handleChange("cor", e.target.value)}
-              />
-            </div>
+          
           </div>
           <div className="grid gap-3 mt-3 ">
           <DialogFooter>

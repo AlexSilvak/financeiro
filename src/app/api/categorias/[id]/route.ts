@@ -30,7 +30,7 @@ export async function GET(req: NextRequest) {
     try {
       await connectDB();
       const body = await req.json();
-      const { nome, tipo, descricao, cor } = body;
+      const { nome, tipo, descricao } = body;
   
       if (!nome || !tipo) {
         return NextResponse.json({ error: 'Nome e tipo são obrigatórios' }, { status: 400 });
@@ -42,7 +42,7 @@ export async function GET(req: NextRequest) {
           nome: nome.trim(),
           tipo,
           descricao,
-          cor,
+      
         },
         { new: true } // Retorna o documento atualizado
       );
@@ -62,7 +62,7 @@ export async function GET(req: NextRequest) {
 
 
   export async function DELETE(_req: NextRequest, { params }: { params: { id: string } }) {
-    const { id } = params;
+    
     try {
       await connectDB();
   

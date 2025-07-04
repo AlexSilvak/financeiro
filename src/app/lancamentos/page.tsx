@@ -11,13 +11,22 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
 import { Plus } from 'lucide-react';
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+
+
+
+
+
+
+
+
+
 interface FormData {
   descricao: string
   forma_de_pagamento: string
@@ -36,9 +45,23 @@ interface Categoria {
   descricao:string
   
 }
+type Lancamento = {
+  _id: string
+  descricao: string
+  forma_de_pagamento: string
+  valor: number
+  tipo: "despesa" | "receita"
+  categoria: string
+  data_vencimento: string
+}
+
+
+
 
 
 export default function FormLancamento() {
+   const [open, setOpen] = useState(false)
+   const [lancamentos, setLancamentos] = useState<Lancamento[]>([])
    const [data, setData] = useState<Categoria[]>([])
    const [formData, setFormData] = useState<FormData>({
     descricao: '',
@@ -92,6 +115,7 @@ export default function FormLancamento() {
         multa: '',
         juros: '',
       })
+      setOpen(false)
     } else {
       toast.error('Erro ao salvar lançamento.')
     }
@@ -109,59 +133,28 @@ export default function FormLancamento() {
   }, [])
 
 
- // tuple  
-let tuple: [string, number] = ["titulo",30]
 
-enum status_pag{
-  pedendete, 
-  pago,
-  recebido
-}
-enum recorrencia{
-  semanal,
-  mensal,
-  anual
-}
-// enum 
-enum categoria{
-  receita,
-  despesa
+
+const fetchLancamentos = async () => {
+  const res = await fetch('/api/lancamentos')
+  const json = await res.json()
+  if (json.lancamentos) setLancamentos(json.lancamentos)
 }
 
-let categoria_financeira : categoria
-//union
-let id: 123 | string ='Alex'
+useEffect(() => {
+  fetchLancamentos()
+}, [])
 
-// intersection
-type super_usuario ={role:string}
-type usuario={name:string}
-type administrador=super_usuario & usuario
 
-let super_usuario: administrador={role:'Gerente', name:'Alex'}
 
-// tipos literais
-let status :"Sucesso" | "Error" |"Carregando" | "Sucesso"
-
- type ID =string | number
-
-let userID : ID ='123'
-
-interface user{
-  name:string,
-  saldo: number
-}
-
-interface Admin extends user{
-  role: string
-}
-
-let admin : Admin={name:'Alex',saldo: 10000, role: 'Manager'}
   return (
     <div className="p-6">
    
-   <Label htmlFor="name-1">#1564648</Label>
+   <div className="p-2">
+    <Label htmlFor="name-1">#Francisco Alex da Silva Queiroz  CPF:097.732.929-94</Label>
+   </div>
     
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       
         <DialogTrigger asChild>
           <Button variant="outline"><Plus />Novo Lançamento</Button>
@@ -281,7 +274,36 @@ return (
         </DialogContent>
      
     </Dialog>
-    
+    <div className="mt-6">
+  <h2 className="text-lg font-semibold mb-2">Lançamentos Cadastrados</h2>
+  <div className="rounded-md border">
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>Descrição</TableHead>
+          <TableHead>Tipo</TableHead>
+          <TableHead>Valor</TableHead>
+          <TableHead>Categoria</TableHead>
+          <TableHead>Forma</TableHead>
+          <TableHead>Vencimento</TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody>
+        {lancamentos.map(l => (
+          <TableRow key={l._id}>
+            <TableCell>{l.descricao}</TableCell>
+            <TableCell className={l.tipo === "receita" ? "text-green-600" : "text-red-600"}>{l.tipo}</TableCell>
+            <TableCell>R$ {l.valor.toFixed(2)}</TableCell>
+            <TableCell>{l.categoria}</TableCell>
+            <TableCell>{l.forma_de_pagamento}</TableCell>
+            <TableCell>{new Date(l.data_vencimento).toLocaleDateString("pt-BR")}</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
+  </div>
+</div>
+
     
     </div>
     

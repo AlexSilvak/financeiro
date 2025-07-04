@@ -58,6 +58,10 @@ const data = {
       //isActive: true,
       items: [
         {
+          title: "DRE",
+          url: "/dre",
+        },
+        {
           title: "Lançamentos",
           url: "/lancamentos",
         },

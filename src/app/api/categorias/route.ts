@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
     await connectDB();
     const body = await req.json();
 
-    const { nome, tipo, descricao, cor, usuario_id } = body;
+    const { nome, tipo, descricao, usuario_id } = body;
 
     if (!nome || !tipo || !usuario_id) {
       return NextResponse.json({ error: 'Campos obrigatórios ausentes' }, { status: 400 });
@@ -30,7 +30,6 @@ export async function POST(req: NextRequest) {
       nome: nome.trim(),
       tipo,
       descricao,
-      cor,
       fixa: false,
       usuario_id,
     });
