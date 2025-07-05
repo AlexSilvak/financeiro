@@ -70,8 +70,8 @@ const data = {
           url: "/categorias",
         },
         {
-          title: "Baixar",
-          url: "/baixa",
+          title: "Processar Extrato",
+          url: "/extratos",
         },
         {
           title: "Payment",
