@@ -14,6 +14,7 @@ export interface ILancamento extends Document {
   multa?: number;
   juros?: number;
   parcela:number;
+  parcela_final:number
   valor_total_pago?: number;
   observacoes?: string;
   recorrente?: boolean;
@@ -33,6 +34,7 @@ const LancamentoSchema: Schema = new Schema({
   multa: { type: Number, default: 0 },
   juros: { type: Number, default: 0 },
   parcela: { type: Number, default: 0 },
+  parcela_final: { type: Number, default: 0 },
   valor_total_pago: { type: Number, default: 0 },
   observacoes: { type: String, default: '', trim: true },
   recorrente: { type: Boolean, default: false },

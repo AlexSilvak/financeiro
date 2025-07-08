@@ -26,8 +26,8 @@ import {
 
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Trash2, Pencil, Printer, Plus } from "lucide-react"
-
+import { Trash2, Pencil, Printer, Plus,DollarSign } from "lucide-react"
+import Loading from "@/components/Loading";
 
 
 interface FormData {
@@ -42,7 +42,7 @@ interface FormData {
   multa: string
   juros: string
   parcela:string
-  
+  parcela_final:string
 }
 
 interface Categoria {
@@ -63,14 +63,33 @@ type Lancamento = {
   juros:string
   multa:string
   parcela:string
+  parcela_final:string
+}
+
+type Loading={
+  loading :'true' | 'false' // retorna 'true'
+
 }
 
 
-
-
-
 export default function FormLancamento() {
+   const [update,setUpdate]=useState<Lancamento[]>({
+    _id:'',
+    descricao: '',
+    forma_de_pagamento: '',
+    valor: '',
+    tipo: '',
+    categoria: '',
+    data_vencimento: '',
+    data_pagamento: '',
+    multa: '',
+    juros: '',
+    parcela:'',
+    parcela_final:'',
+  })
+   const [openSheet,setOpenSheet]=useState(false)
    const [open, setOpen] = useState(false)
+   const [loading,setLoading]=useState(false)
    const [lancamentos, setLancamentos] = useState<Lancamento[]>([])
    const [data, setData] = useState<Categoria[]>([])
    const [formData, setFormData] = useState<FormData>({
@@ -85,22 +104,17 @@ export default function FormLancamento() {
     multa: '',
     juros: '',
     parcela:'',
+    parcela_final:'',
   })
   
   
-  
+ 
 
 
   const handleDelete = async (id: string) => {
     const confirm = window.confirm("Tem certeza que deseja deletar esta lançamento?")
-    
-    toast("Event has been created", {
-        description: "Tem certeza que deseja deletar esta lançamento?",
-        action: {
-          label: "Sim",
-          onClick: () => console.log("Undo"),
-        },
-      })
+    setLoading(true)
+   
     
   
     if (!confirm) return
@@ -108,10 +122,11 @@ export default function FormLancamento() {
     const res = await fetch(`/api/lancamentos/${id}`, {
       method: 'DELETE',
     })
-  
+    setLoading(false)
     if (res.ok) {
       toast.success("Lançamento deletada com sucesso!")
       
+
       setData((prev) => prev.filter((cat) => cat._id !== id))
       fetchLancamentos()
     } else {
@@ -132,23 +147,22 @@ export default function FormLancamento() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-
+    setLoading(true)
     const payload = {
       ...formData,
       valor: parseFloat(formData.valor),
       multa: parseFloat(formData.multa) || 0,
       juros: parseFloat(formData.juros) || 0,
-      parcela: parseFloat(formData.parcela),
       usuario_id: '0', // substitua depois
     }
-
+     
     const res = await fetch('/api/lancamentos', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
     })
     
-
+    setLoading(false)
     if (res.ok) {
       toast.success('Lançamento salvo com sucesso!')
       
@@ -163,7 +177,8 @@ export default function FormLancamento() {
         data_pagamento: '',
         multa: '',
         juros: '',
-        parcela:''
+        parcela:'',
+        parcela_final:''
       })
       setOpen(false)
       fetchLancamentos()
@@ -186,17 +201,24 @@ export default function FormLancamento() {
 
 
 
-const fetchLancamentos = async () => {
-  const res = await fetch('/api/lancamentos')
-  const json = await res.json()
-  if (json.lancamentos) setLancamentos(json.lancamentos)
-}
-
-useEffect(() => {
-  fetchLancamentos()
+  const fetchLancamentos = async () => {
+    setLoading(true)
+    try {
+      const res = await fetch('/api/lancamentos')
+      const json = await res.json()
+      if (json.lancamentos) setLancamentos(json.lancamentos)
+    } catch (error) {
+      console.error('Erro ao buscar lançamentos:', error)
+    } finally {
+      setLoading(false) // ← sempre executa, mesmo se der erro
+    }
+  }
   
-}, [])
+  useEffect(() => {
+    fetchLancamentos()
+  }, [])
 
+ 
 
 
   return (
@@ -234,13 +256,29 @@ useEffect(() => {
       className="w-fit"
     />
   </div>
+  <div  className="flex gap-2 items-center">
+ <Select>
+  <SelectTrigger className="w-[180px]">
+    <SelectValue placeholder="Theme" />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectItem value="light">Light</SelectItem>
+    <SelectItem value="dark">Dark</SelectItem>
+    <SelectItem value="system">System</SelectItem>
+  </SelectContent>
+</Select>
+ </div >
+
   <div className="flex gap-2 items-center">
-  <div className="">
-    <Dialog       open={open} onOpenChange={setOpen}>
-      
-        <DialogTrigger asChild>
+  <div className=" ml-10">
+
+  <Dialog  open={open} onOpenChange={setOpen}>
+ <div className="flex gap-2 items-center"> 
+ <DialogTrigger asChild>
           <Button variant="outline"><Plus />Novo Lançamento</Button>
         </DialogTrigger>
+ </div>
+       
         <DialogContent className="sm:max-w-[425px]">
         <form onSubmit={handleSubmit} className="space-y-4 max-w-xl p-4 m-auto">
           <DialogHeader>
@@ -340,8 +378,12 @@ return (
         </div>
 
         <div>
-          <Label className="p-1">Parcela</Label>
-          <Input name="juros" type="number" value={formData.juros} onChange={handleChange} />
+          <Label className="p-1">Parcela Atual </Label>
+          <Input name="parcela" type="number" value={formData.parcela} onChange={handleChange} />
+        </div>
+        <div>
+          <Label className="p-1">Parcela Final </Label>
+          <Input name="parcela_final" type="number" value={formData.parcela_final} onChange={handleChange} />
         </div>
       </div>
           </div>
@@ -391,9 +433,9 @@ return (
       <DropdownMenuContent className="p-2 ml-4" align="center">
       
         <DropdownMenuGroup>
-          <DropdownMenuItem><Pencil/>Editar</DropdownMenuItem>
+          <DropdownMenuItem ><Pencil/>Editar</DropdownMenuItem>
           <DropdownMenuItem><Printer/>Imprimir</DropdownMenuItem>
-          
+          <DropdownMenuItem onClick={() => setUpdate(l._id) }><DollarSign/>Baixar</DropdownMenuItem>
           <DropdownMenuItem className="text-red-600" onClick={() => handleDelete(l._id)}>
   <Trash2 className="h-4 w-4" /> Deletar
 </DropdownMenuItem>
@@ -408,7 +450,9 @@ return (
     </Table>
   </div>
 </div>
-
+<div className="text-center mt-50 ">
+  {loading && <Loading/>}
+</div>
     
     </div>
     
