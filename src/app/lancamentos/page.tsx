@@ -26,7 +26,7 @@ import {
 
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { Trash2, Pencil, Printer, Plus,DollarSign } from "lucide-react"
+import { Trash2, Pencil, Printer, Plus,DollarSign, SearchCheck } from "lucide-react"
 import Loading from "@/components/Loading";
 
 
@@ -240,6 +240,7 @@ export default function FormLancamento() {
     
     className="max-w-xs"
   />
+  
   <div className="flex gap-2 items-center">
     <label className="text-sm text-muted-foreground">Início:</label>
     <Input
@@ -256,16 +257,34 @@ export default function FormLancamento() {
       className="w-fit"
     />
   </div>
+  <Button >Pesquisar<SearchCheck/></Button>
   <div  className="flex gap-2 items-center">
- <Select>
-  <SelectTrigger className="w-[180px]">
-    <SelectValue placeholder="Theme" />
-  </SelectTrigger>
-  <SelectContent>
-    <SelectItem value="light">Light</SelectItem>
-    <SelectItem value="dark">Dark</SelectItem>
-    <SelectItem value="system">System</SelectItem>
-  </SelectContent>
+  <Select
+value={formData.categoria}
+onValueChange={(v: string) => handleSelectChange("categoria", v)}
+>
+<SelectTrigger className="w-full">
+<SelectValue placeholder="Categoria" />
+</SelectTrigger>
+
+<SelectContent>
+<SelectGroup>
+{data.map((grup)=>{
+return (
+<React.Fragment key={grup._id}>
+<SelectItem value={grup.nome}>{grup.nome}</SelectItem>
+
+
+</React.Fragment>
+
+)
+
+})}
+
+</SelectGroup>
+
+</SelectContent>
+
 </Select>
  </div >
 
@@ -273,12 +292,12 @@ export default function FormLancamento() {
   <div className=" ml-10">
 
   <Dialog  open={open} onOpenChange={setOpen}>
- <div className="flex gap-2 items-center"> 
+ <div className="flex gap-2 items-center "> 
  <DialogTrigger asChild>
           <Button variant="outline"><Plus />Novo Lançamento</Button>
         </DialogTrigger>
  </div>
-       
+ 
         <DialogContent className="sm:max-w-[425px]">
         <form onSubmit={handleSubmit} className="space-y-4 max-w-xl p-4 m-auto">
           <DialogHeader>
