@@ -74,16 +74,12 @@ const data = {
           url: "/extratos",
         },
         {
-          title: "Payment",
+          title: "Pagamentos",
           url: "/payments",
         },
         {
-          title: "Planos",
+          title: "Planos de Pagamento",
           url: "/planos",
-        },
-        {
-          title: "Consultar",
-          url: "/search",
         },
         {
           title: "Dashboard",

@@ -225,7 +225,7 @@ export default function FormLancamento() {
     <div className="p-6">
    
    <div className="grid gap-4 ">
-   <Label htmlFor="name-1">Nome:<span className="inline-flex items-center rounded-md bg-gray-50  py-1 text-xs font-medium text-gray-600 ring-1 ring-gray-500/10 ring-inset px-4 p-0 ">Francisco Alex da Silva Queiroz </span> CPF/CNPJ:<span className="inline-flex items-center rounded-md bg-gray-50  py-1 text-xs font-medium text-gray-600 ring-1 ring-gray-500/10 ring-inset px-4 p-0 ">097.732.929-94</span></Label>
+   <Label htmlFor="name-1">Nome:<span className="inline-flex items-center rounded-md bg-gray-50  py-1 text-xs font-medium text-gray-600 ring-1 ring-gray-500/10 ring-inset px-4 p-0 ">Marcos Costa Silva </span> CPF/CNPJ:<span className="inline-flex items-center rounded-md bg-gray-50  py-1 text-xs font-medium text-gray-600 ring-1 ring-gray-500/10 ring-inset px-4 p-0 ">066.002.999-99</span></Label>
    <Label htmlFor="name-1"> </Label>
     
    </div>
