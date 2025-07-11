@@ -26,7 +26,11 @@ import {
 
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+<<<<<<< HEAD
 import { Trash2, Pencil, Printer, Plus,DollarSign, Search } from "lucide-react"
+=======
+import { Trash2, Pencil, Printer, Plus,DollarSign, SearchCheck } from "lucide-react"
+>>>>>>> 7961d17491cd2f7548296ae13359b0aeef5972d7
 import Loading from "@/components/Loading";
 
 
@@ -230,7 +234,7 @@ export default function FormLancamento() {
     <div className="p-6">
    
    <div className="grid gap-4 ">
-   <Label htmlFor="name-1">Nome:<span className="inline-flex items-center rounded-md bg-gray-50  py-1 text-xs font-medium text-gray-600 ring-1 ring-gray-500/10 ring-inset px-4 p-0 ">Francisco Alex da Silva Queiroz </span> CPF/CNPJ:<span className="inline-flex items-center rounded-md bg-gray-50  py-1 text-xs font-medium text-gray-600 ring-1 ring-gray-500/10 ring-inset px-4 p-0 ">097.732.929-94</span></Label>
+   <Label htmlFor="name-1">Nome:<span className="inline-flex items-center rounded-md bg-gray-50  py-1 text-xs font-medium text-gray-600 ring-1 ring-gray-500/10 ring-inset px-4 p-0 ">Marcos Costa Silva </span> CPF/CNPJ:<span className="inline-flex items-center rounded-md bg-gray-50  py-1 text-xs font-medium text-gray-600 ring-1 ring-gray-500/10 ring-inset px-4 p-0 ">066.002.999-99</span></Label>
    <Label htmlFor="name-1"> </Label>
     
    </div>
@@ -244,7 +248,12 @@ export default function FormLancamento() {
     placeholder="🔍 Buscar por nome do backup..."
     
     className="max-w-xs"
+<<<<<<< HEAD
   /><Button variant="outline">Pesquisar<Search/></Button>
+=======
+  />
+  
+>>>>>>> 7961d17491cd2f7548296ae13359b0aeef5972d7
   <div className="flex gap-2 items-center">
     <label className="text-sm text-muted-foreground">Início:</label>
     <Input
@@ -261,8 +270,13 @@ export default function FormLancamento() {
       className="w-fit"
     />
   </div>
+  <Button >Pesquisar<SearchCheck/></Button>
   <div  className="flex gap-2 items-center">
+<<<<<<< HEAD
  <Select
+=======
+  <Select
+>>>>>>> 7961d17491cd2f7548296ae13359b0aeef5972d7
 value={formData.categoria}
 onValueChange={(v: string) => handleSelectChange("categoria", v)}
 >
@@ -295,12 +309,12 @@ return (
   <div className=" ml-10">
 
   <Dialog  open={open} onOpenChange={setOpen}>
- <div className="flex gap-2 items-center"> 
+ <div className="flex gap-2 items-center "> 
  <DialogTrigger asChild>
           <Button variant="outline"><Plus />Novo Lançamento</Button>
         </DialogTrigger>
  </div>
-       
+ 
         <DialogContent className="sm:max-w-[425px]">
         <form onSubmit={handleSubmit} className="space-y-4 max-w-xl p-4 m-auto">
           <DialogHeader>

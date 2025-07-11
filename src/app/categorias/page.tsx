@@ -42,7 +42,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Trash2, Pencil, Printer, Plus } from "lucide-react"
 import { DotsVerticalIcon } from "@radix-ui/react-icons"
-
+import Loading from "@/components/Loading";
 interface FormData {
   nome: string
   tipo: 'despesa' | 'receita' | ''
@@ -57,6 +57,7 @@ type Categoria = {
   usuario_id: string
 }
 export default function Page() {
+  const [loading,setLoading]=useState(false)
    const [open, setOpen] = useState(false)
   const [data, setData] = useState<Categoria[]>([])
   const [formData, setFormData] = useState<FormData>({
@@ -283,6 +284,9 @@ export default function Page() {
         ))}
       </TableBody>
     </Table>
+    <div className="text-center mt-50 ">
+      {loading && <Loading/>}
+    </div>
   </div>
   )
 }
