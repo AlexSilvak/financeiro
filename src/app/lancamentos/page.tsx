@@ -26,7 +26,11 @@ import {
 
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
+<<<<<<< HEAD
+import { Trash2, Pencil, Printer, Plus,DollarSign, Search } from "lucide-react"
+=======
 import { Trash2, Pencil, Printer, Plus,DollarSign, SearchCheck } from "lucide-react"
+>>>>>>> 7961d17491cd2f7548296ae13359b0aeef5972d7
 import Loading from "@/components/Loading";
 
 
@@ -214,6 +218,11 @@ export default function FormLancamento() {
     }
   }
   
+  const handleSearch=()=>{
+     // utilizara useMemo 
+     
+  }
+
   useEffect(() => {
     fetchLancamentos()
   }, [])
@@ -239,8 +248,12 @@ export default function FormLancamento() {
     placeholder="🔍 Buscar por nome do backup..."
     
     className="max-w-xs"
+<<<<<<< HEAD
+  /><Button variant="outline">Pesquisar<Search/></Button>
+=======
   />
   
+>>>>>>> 7961d17491cd2f7548296ae13359b0aeef5972d7
   <div className="flex gap-2 items-center">
     <label className="text-sm text-muted-foreground">Início:</label>
     <Input
@@ -259,7 +272,11 @@ export default function FormLancamento() {
   </div>
   <Button >Pesquisar<SearchCheck/></Button>
   <div  className="flex gap-2 items-center">
+<<<<<<< HEAD
+ <Select
+=======
   <Select
+>>>>>>> 7961d17491cd2f7548296ae13359b0aeef5972d7
 value={formData.categoria}
 onValueChange={(v: string) => handleSelectChange("categoria", v)}
 >
