@@ -26,6 +26,7 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar"
 
+
 // This is sample data.
 const data = {
   user: {
@@ -52,7 +53,7 @@ const data = {
   ],
   navMain: [
     {
-      title: "Contas a Pagar",
+      title: "Financeiro",
       url: "#",
       icon: SquareTerminal,
       //isActive: true,
@@ -81,6 +82,35 @@ const data = {
           title: "Planos de Pagamento",
           url: "/planos",
         },
+         {
+          title: "Contas a Pagar",
+          url: "/planos",
+        },
+         {
+          title: "Contas a Receber",
+          url: "/planos",
+        },
+         {
+          title: "Bancos",
+          url: "/dashboard",
+        },
+         {
+          title: "Agências",
+          url: "/dashboard",
+        },
+          {
+          title: "Contas Bancárias",
+          url: "/dashboard",
+        },
+          {
+          title: "Categorias Financeiras",
+          url: "/dashboard",
+        },
+          {
+          title: "Lançamentos / Movimentações",
+          url: "/dashboard",
+        },
+        
         {
           title: "Dashboard",
           url: "/dashboard",
@@ -111,29 +141,30 @@ const data = {
       ],
     },
     {
-      title: "Contas a Receber",
-      url: "#",
-      icon: Bot,
-      items: [
-        {
-          title: "Genesis",
-          url: "#",
-        },
-        {
-          title: "Explorer",
-          url: "#",
-        },
-        {
-          title: "Quantum",
-          url: "#",
-        },
-      ],
-    },
-    {
-      title: "Usuários",
+      title: "Cadastros",
       url: "#",
       icon: BookOpen,
       items: [
+        {
+          title: "Usuários",
+          url: "#",
+        },
+        {
+          title: "Clientes",
+          url: "#",
+        },
+        {
+          title: "Fornecedores",
+          url: "#",
+        },
+         {
+          title: "Terceiros",
+          url: "#",
+        },
+          {
+          title: "Colaboradores",
+          url: "#",
+        },
         {
           title: "Consulta",
           url: "#",
@@ -156,6 +187,7 @@ const data = {
         },
       ],
     },
+  
     {
       title: "Investimentos",
       url: "#",

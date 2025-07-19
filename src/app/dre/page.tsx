@@ -1,7 +1,8 @@
 // app/lancamentos/page.tsx
+import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
-
+import { Settings } from 'lucide-react';
 type Lancamento = {
   _id: string
   descricao: string
@@ -59,7 +60,7 @@ export default async function LancamentosDRE() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8 space-y-6">
-      
+      <div className="flex grid-cols-2 gap-2"><Button><Settings />Parâmetros</Button></div>
       <h1 className="text-2xl font-bold mb-4">Demonstrativo de Resultados</h1>
 
       {/* Totais */}
