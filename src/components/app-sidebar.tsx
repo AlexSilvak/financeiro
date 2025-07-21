@@ -92,7 +92,7 @@ const data = {
         },
          {
           title: "Bancos",
-          url: "/dashboard",
+          url: "/banco",
         },
          {
           title: "Agências",

@@ -58,7 +58,7 @@ type Categoria = {
 }
 export default function Page() {
   const [loading,setLoading]=useState(false)
-   const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false)
   const [data, setData] = useState<Categoria[]>([])
   const [formData, setFormData] = useState<FormData>({
     nome: "",

@@ -1,19 +1,47 @@
-import mongoose, { Schema, Document } from 'mongoose'
+// models/banco.ts
+import  { Schema, Document, model, models } from 'mongoose'
 
 export interface IBanco extends Document {
-  nome: string
-  codigo_banco: string
-  agencia: string
-  endereco?: string
-  contato?: string
+  name: string
+  bank_code: string
+  agency: {
+    number: string
+    name?: string
+    address?: string
+    contact?: string
+  }
+  account_number: string
+  manager: string
+  sac: string
+  fone: string
+  email: string
+  status: string
 }
 
-const BancoSchema: Schema<IBanco> = new Schema({
-  nome: { type: String, required: true },
-  codigo_banco: { type: String, required: true },
-  agencia: { type: String, required: true },
-  endereco: { type: String },
-  contato: { type: String },
-}, { timestamps: true })
+const BancoSchema = new Schema<IBanco>(
+  {
+    name: { type: String, required: true },
+    bank_code: { type: String, required: true },
 
-export default mongoose.models.Banco || mongoose.model<IBanco>('Banco', BancoSchema)
+    agency: {
+      number: { type: String, required: true },
+      name: { type: String },
+      address: { type: String },
+      contact: { type: String },
+    },
+
+    account_number: { type: String, required: true },
+    manager: { type: String, required: true },
+    sac: { type: String, required: true },
+    fone: { type: String, required: true },
+    email: { type: String, required: true },
+
+    status: { type: String, required: true }, // exemplo: "ativo", "inativo"
+  },
+  {
+    timestamps: true,
+  }
+)
+
+const Banco = models.Banco || model<IBanco>('Banco', BancoSchema)
+export default Banco

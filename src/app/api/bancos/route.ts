@@ -3,14 +3,15 @@ import Banco from '@/models/banco'
 import { connectDB } from '@/lib/mongodb'; 
 
 export async function GET() {
-  await dbConnect()
+  await connectDB()
   const bancos = await Banco.find()
   return NextResponse.json(bancos)
 }
 
 export async function POST(req: NextRequest) {
-  await dbConnect()
+  await connectDB()
   const data = await req.json()
   const novoBanco = await Banco.create(data)
   return NextResponse.json(novoBanco, { status: 201 })
 }
+
