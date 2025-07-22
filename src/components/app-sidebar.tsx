@@ -41,7 +41,7 @@ const data = {
       plan: "Enterprise",
     },
     {
-      name: "Financeiro Corp.",
+      name: "Financeiro Corp",
       logo: AudioWaveform,
       plan: "Startup",
     },
@@ -100,7 +100,7 @@ const data = {
         },
           {
           title: "Contas Bancárias",
-          url: "/dashboard",
+          url: "/conta-bancaria",
         },
           {
           title: "Categorias Financeiras",

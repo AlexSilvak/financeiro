@@ -24,17 +24,17 @@ const BancoSchema = new Schema<IBanco>(
     bank_code: { type: String, required: true },
 
     agency: {
-      number: { type: String, required: true },
+      number: { type: String},
       name: { type: String },
       address: { type: String },
       contact: { type: String },
     },
 
-    account_number: { type: String, required: true },
-    manager: { type: String, required: true },
-    sac: { type: String, required: true },
-    fone: { type: String, required: true },
-    email: { type: String, required: true },
+    account_number: { type: String },
+    manager: { type: String},
+    sac: { type: String},
+    fone: { type: String},
+    email: { type: String },
 
     status: { type: String, required: true }, // exemplo: "ativo", "inativo"
   },
