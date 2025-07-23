@@ -69,7 +69,8 @@ export default function Page() {
       const res = await axios.get('/api/bancos')
       setBancos(res.data)
     } catch (err) {
-      toast.error('Erro ao carregar bancos.')
+      console.log(err)
+      toast.error('Erro ao carregar bancos.',)
     }
   }
 
@@ -78,8 +79,8 @@ export default function Page() {
     fetchBancos()
   }, [])
 
-  const handleChange = (field: keyof ContaForm, value: any) => {
-    setForm((prev) => ({
+  const handleChange = (field: keyof ContaForm, value: string ) => {
+    setForm((prev) => ({ 
       ...prev,
       [field]: value,
     }))

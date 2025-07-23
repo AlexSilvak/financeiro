@@ -69,4 +69,16 @@ export const columns: ColumnDef<IContaBancaria>[] = [
       )
     },
   },
+   {
+    accessorKey: 'opcoes',
+    header: 'opcoes',
+    cell: ({ row }) => {
+      const ativo = row.getValue('ativo') as boolean
+      return ativo ? (
+        <Badge variant="default">Sim</Badge>
+      ) : (
+        <Badge variant="destructive">Não</Badge>
+      )
+    },
+  },
 ]

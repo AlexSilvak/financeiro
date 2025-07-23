@@ -1,11 +1,12 @@
-'use client'
+"use client"
 
 import {
   ColumnDef,
   flexRender,
   getCoreRowModel,
   useReactTable,
-} from '@tanstack/react-table'
+} from "@tanstack/react-table"
+
 import {
   Table,
   TableBody,
@@ -13,7 +14,7 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table'
+} from "@/components/ui/table"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -31,13 +32,13 @@ export function DataTable<TData, TValue>({
   })
 
   return (
-    <div className="w-full rounded-md border">
+    <div className="rounded-md border overflow-auto">
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
-                <TableHead key={header.id} className="text-xs text-muted-foreground">
+                <TableHead key={header.id} className="whitespace-nowrap">
                   {header.isPlaceholder
                     ? null
                     : flexRender(
@@ -49,29 +50,23 @@ export function DataTable<TData, TValue>({
             </TableRow>
           ))}
         </TableHeader>
-
         <TableBody>
           {table.getRowModel().rows.length ? (
             table.getRowModel().rows.map((row) => (
               <TableRow
                 key={row.id}
-                data-state={row.getIsSelected() && 'selected'}
+                data-state={row.getIsSelected() && "selected"}
               >
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id} className="text-sm">
+                  <TableCell key={cell.id} className="whitespace-nowrap">
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                    
                   </TableCell>
                 ))}
-                
               </TableRow>
             ))
           ) : (
             <TableRow>
-              <TableCell
-                colSpan={columns.length}
-                className="h-24 text-center text-muted-foreground"
-              >
+              <TableCell colSpan={columns.length} className="h-24 text-center">
                 Nenhum resultado encontrado.
               </TableCell>
             </TableRow>
