@@ -29,7 +29,7 @@ import {
 
 import { Trash2, Pencil, Printer, Plus,DollarSign, Search } from "lucide-react"
 
-import {  SearchCheck } from "lucide-react"
+
 
 import Loading from "@/components/Loading";
 
@@ -192,9 +192,9 @@ export default function FormLancamento() {
   }
   // usado para listagem de categoria no dropdown
   useEffect(() => {
-    const usuario_id = '1234567890abcdef' // ou pegue do auth/context
+    const usuario_id = '64user12345678' // ou pegue do auth/context
   
-    fetch(`/api/categorias?usuario_id=${usuario_id}`)
+    fetch(`/api/categories?usuario_id=${usuario_id}`)
       .then((res) => res.json())
       .then((res) => {
         console.log( res.data)

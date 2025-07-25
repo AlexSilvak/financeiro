@@ -64,11 +64,11 @@ export default function Page() {
     name: "",
     type: "",
     description: "",
-    user_id: "68824ede073e5ac728ba791c",
+    user_id: "64user12345678",
   })
  console.log("1"+ formData)
   useEffect(() => {
-    const user_id = '68824ede073e5ac728ba791c' // ou pegue do auth/context
+    const user_id = '64user12345678' // ou pegue do auth/context
   
     fetch(`/api/categories?user_id=${user_id}`)
       .then((res) => res.json())
@@ -117,7 +117,7 @@ export default function Page() {
         name: "",
         type: "",
         description: "",
-        user_id: "68824ede073e5ac728ba791c",
+        user_id: "64user12345678",
       })
       
       setOpen(false)

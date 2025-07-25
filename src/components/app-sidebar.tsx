@@ -116,7 +116,7 @@ const data = {
         },
          {
           title: "Fluxo de Caixa",
-          url: "/dashboard",
+          url: "/fluxo-caixa",
         },
          {
           title: "Fechame",
