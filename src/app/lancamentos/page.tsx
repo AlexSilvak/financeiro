@@ -242,14 +242,7 @@ export default function FormLancamento() {
   <div className="flex flex-wrap gap-4 items-center mt-4">
   <Input
     placeholder="🔍 Buscar por nome do backup..."
-    
-    className="max-w-xs"
-
-  /><Button variant="outline">Pesquisar<Search/></Button>
-
-
-  
-
+    className="max-w-xs"/>
   <div className="flex gap-2 items-center">
     <label className="text-sm text-muted-foreground">Início:</label>
     <Input
@@ -266,7 +259,7 @@ export default function FormLancamento() {
       className="w-fit"
     />
   </div>
-  <Button >Pesquisar<SearchCheck/></Button>
+  
   <div  className="flex gap-2 items-center">
  <Select
 value={formData.categoria}
@@ -274,8 +267,9 @@ onValueChange={(v: string) => handleSelectChange("categoria", v)}
 >
 <SelectTrigger className="w-full">
 <SelectValue placeholder="Categoria" />
-</SelectTrigger>
 
+</SelectTrigger>
+<Button variant="outline">Pesquisar<Search/></Button>
 <SelectContent>
 <SelectGroup>
 {data.map((grup)=>{

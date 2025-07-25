@@ -30,23 +30,23 @@ import {
 // This is sample data.
 const data = {
   user: {
-    name: "Financeiro",
-    email: "financeiro@example.com",
+    name: "ERP",
+    email: "erp@gmail.com",
     avatar: "",
   },
   teams: [
     {
-      name: "Financeiro Inc",
+      name: "Empresa 1 Inc",
       logo: GalleryVerticalEnd,
       plan: "Enterprise",
     },
     {
-      name: "Financeiro Corp",
+      name: "Empresa 2 Inc",
       logo: AudioWaveform,
       plan: "Startup",
     },
     {
-      name: "Financeiro Corp.",
+      name: "Empresa 3 Inc",
       logo: Command,
       plan: "Free",
     },
@@ -68,7 +68,7 @@ const data = {
         },
         {
           title: "Categorias",
-          url: "/categorias",
+          url: "/categories",
         },
         {
           title: "Processar Extrato",
@@ -92,7 +92,7 @@ const data = {
         },
          {
           title: "Bancos",
-          url: "/banco",
+          url: "/bancos",
         },
          {
           title: "Agências",
@@ -100,7 +100,7 @@ const data = {
         },
           {
           title: "Contas Bancárias",
-          url: "/conta-bancaria",
+          url: "/contas-bancarias",
         },
           {
           title: "Categorias Financeiras",
@@ -108,6 +108,423 @@ const data = {
         },
           {
           title: "Lançamentos / Movimentações",
+          url: "/dashboard",
+        },
+         {
+          title: "Estratos",
+          url: "/dashboard",
+        },
+         {
+          title: "Fluxo de Caixa",
+          url: "/dashboard",
+        },
+         {
+          title: "Fechame",
+          url: "/dashboard",
+        },
+        
+        {
+          title: "Dashboard",
+          url: "/dashboard",
+        },
+        {
+          title: "Parâmetros",
+          url: "/parametros",
+        },
+      ],
+    },
+     {
+      title: "Compras",
+      url: "#",
+      icon: SquareTerminal,
+      //isActive: true,
+      items: [
+        {
+          title: "DRE",
+          url: "/dre",
+        },
+        {
+          title: "Lançamentos",
+          url: "/lancamentos",
+        },
+        {
+          title: "Categorias",
+          url: "/categories",
+        },
+        {
+          title: "Processar Extrato",
+          url: "/extratos",
+        },
+        {
+          title: "Fechamentos",
+          url: "/fechamentos",
+        },
+        {
+          title: "Planos de Pagamento",
+          url: "/planos",
+        },
+         {
+          title: "Contas a Pagar",
+          url: "/planos",
+        },
+         {
+          title: "Contas a Receber",
+          url: "/planos",
+        },
+         {
+          title: "Bancos",
+          url: "/bancos",
+        },
+         {
+          title: "Agências",
+          url: "/dashboard",
+        },
+          {
+          title: "Contas Bancárias",
+          url: "/contas-bancarias",
+        },
+          {
+          title: "Categorias Financeiras",
+          url: "/dashboard",
+        },
+          {
+          title: "Lançamentos / Movimentações",
+          url: "/dashboard",
+        },
+         {
+          title: "Estratos",
+          url: "/dashboard",
+        },
+         {
+          title: "Fluxo de Caixa",
+          url: "/dashboard",
+        },
+         {
+          title: "Fechame",
+          url: "/dashboard",
+        },
+        
+        {
+          title: "Dashboard",
+          url: "/dashboard",
+        },
+        {
+          title: "Parâmetros",
+          url: "/parametros",
+        },
+      ],
+    },
+     {
+      title: "Fiscal",
+      url: "#",
+      icon: SquareTerminal,
+      //isActive: true,
+      items: [
+        {
+          title: "DRE",
+          url: "/dre",
+        },
+        {
+          title: "Lançamentos",
+          url: "/lancamentos",
+        },
+        {
+          title: "Categorias",
+          url: "/categories",
+        },
+        {
+          title: "Processar Extrato",
+          url: "/extratos",
+        },
+        {
+          title: "Fechamentos",
+          url: "/fechamentos",
+        },
+        {
+          title: "Planos de Pagamento",
+          url: "/planos",
+        },
+         {
+          title: "Contas a Pagar",
+          url: "/planos",
+        },
+         {
+          title: "Contas a Receber",
+          url: "/planos",
+        },
+         {
+          title: "Bancos",
+          url: "/bancos",
+        },
+         {
+          title: "Agências",
+          url: "/dashboard",
+        },
+          {
+          title: "Contas Bancárias",
+          url: "/contas-bancarias",
+        },
+          {
+          title: "Categorias Financeiras",
+          url: "/dashboard",
+        },
+          {
+          title: "Lançamentos / Movimentações",
+          url: "/dashboard",
+        },
+         {
+          title: "Estratos",
+          url: "/dashboard",
+        },
+         {
+          title: "Fluxo de Caixa",
+          url: "/dashboard",
+        },
+         {
+          title: "Fechame",
+          url: "/dashboard",
+        },
+        
+        {
+          title: "Dashboard",
+          url: "/dashboard",
+        },
+        {
+          title: "Parâmetros",
+          url: "/parametros",
+        },
+      ],
+    },
+     {
+      title: "Logistica",
+      url: "#",
+      icon: SquareTerminal,
+      //isActive: true,
+      items: [
+        {
+          title: "DRE",
+          url: "/dre",
+        },
+        {
+          title: "Lançamentos",
+          url: "/lancamentos",
+        },
+        {
+          title: "Categorias",
+          url: "/categories",
+        },
+        {
+          title: "Processar Extrato",
+          url: "/extratos",
+        },
+        {
+          title: "Fechamentos",
+          url: "/fechamentos",
+        },
+        {
+          title: "Planos de Pagamento",
+          url: "/planos",
+        },
+         {
+          title: "Contas a Pagar",
+          url: "/planos",
+        },
+         {
+          title: "Contas a Receber",
+          url: "/planos",
+        },
+         {
+          title: "Bancos",
+          url: "/bancos",
+        },
+         {
+          title: "Agências",
+          url: "/dashboard",
+        },
+          {
+          title: "Contas Bancárias",
+          url: "/contas-bancarias",
+        },
+          {
+          title: "Categorias Financeiras",
+          url: "/dashboard",
+        },
+          {
+          title: "Lançamentos / Movimentações",
+          url: "/dashboard",
+        },
+         {
+          title: "Estratos",
+          url: "/dashboard",
+        },
+         {
+          title: "Fluxo de Caixa",
+          url: "/dashboard",
+        },
+         {
+          title: "Fechame",
+          url: "/dashboard",
+        },
+        
+        {
+          title: "Dashboard",
+          url: "/dashboard",
+        },
+        {
+          title: "Parâmetros",
+          url: "/parametros",
+        },
+      ],
+    },
+     {
+      title: "Vendas",
+      url: "#",
+      icon: SquareTerminal,
+      //isActive: true,
+      items: [
+        {
+          title: "DRE",
+          url: "/dre",
+        },
+        {
+          title: "Lançamentos",
+          url: "/lancamentos",
+        },
+        {
+          title: "Categorias",
+          url: "/categories",
+        },
+        {
+          title: "Processar Extrato",
+          url: "/extratos",
+        },
+        {
+          title: "Fechamentos",
+          url: "/fechamentos",
+        },
+        {
+          title: "Planos de Pagamento",
+          url: "/planos",
+        },
+         {
+          title: "Contas a Pagar",
+          url: "/planos",
+        },
+         {
+          title: "Contas a Receber",
+          url: "/planos",
+        },
+         {
+          title: "Bancos",
+          url: "/bancos",
+        },
+         {
+          title: "Agências",
+          url: "/dashboard",
+        },
+          {
+          title: "Contas Bancárias",
+          url: "/contas-bancarias",
+        },
+          {
+          title: "Categorias Financeiras",
+          url: "/dashboard",
+        },
+          {
+          title: "Lançamentos / Movimentações",
+          url: "/dashboard",
+        },
+         {
+          title: "Estratos",
+          url: "/dashboard",
+        },
+         {
+          title: "Fluxo de Caixa",
+          url: "/dashboard",
+        },
+         {
+          title: "Fechame",
+          url: "/dashboard",
+        },
+        
+        {
+          title: "Dashboard",
+          url: "/dashboard",
+        },
+        {
+          title: "Parâmetros",
+          url: "/parametros",
+        },
+      ],
+    },
+     {
+      title: "CRM",
+      url: "#",
+      icon: SquareTerminal,
+      //isActive: true,
+      items: [
+        {
+          title: "DRE",
+          url: "/dre",
+        },
+        {
+          title: "Lançamentos",
+          url: "/lancamentos",
+        },
+        {
+          title: "Categorias",
+          url: "/categories",
+        },
+        {
+          title: "Processar Extrato",
+          url: "/extratos",
+        },
+        {
+          title: "Fechamentos",
+          url: "/fechamentos",
+        },
+        {
+          title: "Planos de Pagamento",
+          url: "/planos",
+        },
+         {
+          title: "Contas a Pagar",
+          url: "/planos",
+        },
+         {
+          title: "Contas a Receber",
+          url: "/planos",
+        },
+         {
+          title: "Bancos",
+          url: "/bancos",
+        },
+         {
+          title: "Agências",
+          url: "/dashboard",
+        },
+          {
+          title: "Contas Bancárias",
+          url: "/contas-bancarias",
+        },
+          {
+          title: "Categorias Financeiras",
+          url: "/dashboard",
+        },
+          {
+          title: "Lançamentos / Movimentações",
+          url: "/dashboard",
+        },
+         {
+          title: "Estratos",
+          url: "/dashboard",
+        },
+         {
+          title: "Fluxo de Caixa",
+          url: "/dashboard",
+        },
+         {
+          title: "Fechame",
           url: "/dashboard",
         },
         
@@ -273,6 +690,14 @@ const data = {
           title: "Tipo",
           url: "#",
         },
+         {
+          title: "Cotação",
+          url: "#",
+        },
+         {
+          title: "Feriados",
+          url: "#",
+        },
         {
           title: "Status",
           url: "#",
@@ -285,6 +710,84 @@ const data = {
     },
     {
       title: "Automação",
+      url: "#",
+      icon: Settings2,
+      items: [
+        {
+          title: "Processar Extratos",
+          url: "/extratos",
+        },
+        {
+          title: "Pessoa",
+          url: "#",
+        },
+        {
+          title: "Formas de Pagamentos",
+          url: "#",
+        },
+        {
+          title: "Juros",
+          url: "#",
+        },
+        {
+          title: "Multa",
+          url: "#",
+        },
+        {
+          title: "Tipo",
+          url: "#",
+        },
+        {
+          title: "Status",
+          url: "#",
+        },
+        {
+          title: "Backup Banco de dados",
+          url: "/backup",
+        },
+      ],
+    },
+     {
+      title: "IA",
+      url: "#",
+      icon: Settings2,
+      items: [
+        {
+          title: "Processar Extratos",
+          url: "/extratos",
+        },
+        {
+          title: "Pessoa",
+          url: "#",
+        },
+        {
+          title: "Formas de Pagamentos",
+          url: "#",
+        },
+        {
+          title: "Juros",
+          url: "#",
+        },
+        {
+          title: "Multa",
+          url: "#",
+        },
+        {
+          title: "Tipo",
+          url: "#",
+        },
+        {
+          title: "Status",
+          url: "#",
+        },
+        {
+          title: "Backup Banco de dados",
+          url: "/backup",
+        },
+      ],
+    },
+     {
+      title: "API Externas",
       url: "#",
       icon: Settings2,
       items: [
@@ -344,6 +847,21 @@ const data = {
       name: "Documentação",
       url: "/documentacao",
       icon: Map,
+    },
+    {
+      name: "IA",
+      url: "#",
+      icon: Frame,
+    },
+    {
+      name: "API Externas",
+      url: "#",
+      icon: Frame,
+    },
+    {
+      name: "Notificações",
+      url: "#",
+      icon: Frame,
     },
   ],
 }

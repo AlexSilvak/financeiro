@@ -44,33 +44,33 @@ import { Trash2, Pencil, Printer, Plus } from "lucide-react"
 import { DotsVerticalIcon } from "@radix-ui/react-icons"
 import Loading from "@/components/Loading";
 interface FormData {
-  nome: string
-  tipo: 'despesa' | 'receita' | ''
-  descricao: string
-  usuario_id: string
+  name: string
+  type: 'expense' | 'income' | ''
+  description: string
+  user_id: string
 }
 type Categoria = {
   _id: string
-  nome: string
-  tipo: 'receita' | 'despesa'
-  descricao: string
-  usuario_id: string
+  name: string
+  type: 'expense' | 'income' | ''
+  description: string
+  user_id: string
 }
 export default function Page() {
   const [loading,setLoading]=useState(false)
   const [open, setOpen] = useState(false)
   const [data, setData] = useState<Categoria[]>([])
   const [formData, setFormData] = useState<FormData>({
-    nome: "",
-    tipo: "",
-    descricao: "",
-    usuario_id: "1234567890abcdef",
+    name: "",
+    type: "",
+    description: "",
+    user_id: "68824ede073e5ac728ba791c",
   })
-
+ console.log("1"+ formData)
   useEffect(() => {
-    const usuario_id = '1234567890abcdef' // ou pegue do auth/context
+    const user_id = '68824ede073e5ac728ba791c' // ou pegue do auth/context
   
-    fetch(`/api/categorias?usuario_id=${usuario_id}`)
+    fetch(`/api/categories?user_id=${user_id}`)
       .then((res) => res.json())
       .then((res) => {
         console.log( res.data)
@@ -80,12 +80,13 @@ export default function Page() {
   
   const handleDelete = async (id: string) => {
     const confirm = window.confirm("Tem certeza que deseja deletar esta categoria?")
+    setLoading(true)
     if (!confirm) return
    
-    const res = await fetch(`/api/categorias/${id}`, {
+    const res = await fetch(`/api/categories/${id}`, {
       method: 'DELETE',
     })
-  
+  setLoading(false)
     if (res.ok) {
       toast.success("Categoria deletada com sucesso!")
       setData((prev) => prev.filter((cat) => cat._id !== id))
@@ -103,22 +104,25 @@ export default function Page() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-
-    const res = await fetch('/api/categorias', {
+     
+    const res = await fetch('/api/categories', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData),
     })
-
+     
     if (res.ok) {
       toast.success('Categoria salva com sucesso!')
       setFormData({
-        nome: '',
-        tipo: '',
-        descricao: '',
-        usuario_id: '1234567890abcdef',
+        name: "",
+        type: "",
+        description: "",
+        user_id: "68824ede073e5ac728ba791c",
       })
+      
       setOpen(false)
+      setLoading(false)
+      
     } else {
       toast.error('Erro ao salvar categoria.')
     }
@@ -126,37 +130,36 @@ export default function Page() {
 
 
 
-  //table
+  //Table
   const columns: ColumnDef<Categoria>[] = [
     {
       header: 'Nome',
-      accessorKey: 'nome',
+      accessorKey: 'name',
     },
     {
       header: 'Tipo',
-      accessorKey: 'tipo',
+      accessorKey: 'type',
       cell: ({ row }) => (
         <span
           className={`capitalize font-semibold ${
-            row.original.tipo === 'despesa' ? 'text-red-500' : 'text-green-500'
+            row.original.type=== 'expense' ? 'text-red-500' : 'text-green-500'
           }`}
         >
-          {row.original.tipo}
+          {row.original.type === 'expense' ? 'Despesa' : 'Receita'}
         </span>
       ),
     },
     {
       header: 'Descrição',
-      accessorKey: 'descricao',
+      accessorKey: 'description',
     },
     
     {
-      header: 'Ações',
-      accessorKey: 'acoes',
+      header: '',
+      accessorKey: 'actions',
       cell: ({  }) => (
         <span
-          className={`ml'
-          }`}
+          className={``}
         >
           
         </span>
@@ -188,38 +191,38 @@ export default function Page() {
 
           <div className="grid gap-3 mt-3 ">
             <div className="grid gap-3">
-              <Label htmlFor="nome">Nome</Label>
+              <Label htmlFor="name">Nome</Label>
               <Input
-                id="nome"
-                name="nome"
-                value={formData.nome}
-                onChange={(e) => handleChange("nome", e.target.value)}
+                id="name"
+                name="name"
+                value={formData.name}
+                onChange={(e) => handleChange("name", e.target.value)}
               />
             </div>
 
             <div className="grid gap-3">
-              <Label htmlFor="tipo">Tipo</Label>
+              <Label htmlFor="type">Tipo</Label>
               <Select
-                value={formData.tipo}
-                onValueChange={(value) => handleChange("tipo", value)}
+                value={formData.type}
+                onValueChange={(value) => handleChange("type", value)}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Selecione o tipo" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="despesa">Despesa</SelectItem>
-                  <SelectItem value="receita">Receita</SelectItem>
+                  <SelectItem value="expense">Despesa</SelectItem>
+                  <SelectItem value="income">Receita</SelectItem>
                 </SelectContent>
               </Select>
             </div>
 
             <div className="grid gap-3">
-              <Label htmlFor="descricao">Descrição</Label>
+              <Label htmlFor="description">Descrição</Label>
               <Input
-                id="descricao"
-                name="descricao"
-                value={formData.descricao}
-                onChange={(e) => handleChange("descricao", e.target.value)}
+                id="description"
+                name="description"
+                value={formData.description}
+                onChange={(e) => handleChange("description", e.target.value)}
               />
             </div>
 
