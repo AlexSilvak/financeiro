@@ -29,7 +29,7 @@ import {
 
 import { Trash2, Pencil, Printer, Plus,DollarSign, Search } from "lucide-react"
 
-
+import { Switch } from "@/components/ui/switch"
 
 import Loading from "@/components/Loading";
 
@@ -40,6 +40,7 @@ interface FormData {
   forma_de_pagamento: string
   valor: string
   tipo: 'despesa' | 'receita' | ''
+  fixed:boolean
   categoria: string
   data_vencimento: string
   data_pagamento: string
@@ -51,8 +52,9 @@ interface FormData {
 
 interface Categoria {
   _id: string
-  nome: string
-  descricao:string
+  name: string
+  type:string
+  description:string
   
 }
 type Lancamento = {
@@ -61,6 +63,7 @@ type Lancamento = {
   forma_de_pagamento: string
   valor: number
   tipo: "despesa" | "receita"
+  fixed:boolean
   categoria: string
   data_vencimento: string
   status:string
@@ -83,6 +86,7 @@ export default function FormLancamento() {
     forma_de_pagamento: '',
     valor: '',
     tipo: '',
+    fixed:false,
     categoria: '',
     data_vencimento: '',
     data_pagamento: '',
@@ -95,6 +99,7 @@ export default function FormLancamento() {
    const [open, setOpen] = useState(false)
    const [loading,setLoading]=useState(false)
    const [lancamentos, setLancamentos] = useState<Lancamento[]>([])
+   const [fixed,setFixed]=useState(false)
    const [data, setData] = useState<Categoria[]>([])
    const [formData, setFormData] = useState<FormData>({
     _id:'',
@@ -102,6 +107,7 @@ export default function FormLancamento() {
     forma_de_pagamento: '',
     valor: '',
     tipo: '',
+    fixed:false,
     categoria: '',
     data_vencimento: '',
     data_pagamento: '',
@@ -113,7 +119,7 @@ export default function FormLancamento() {
   
   
  
-
+ 
 
   const handleDelete = async (id: string) => {
     const confirm = window.confirm("Tem certeza que deseja deletar esta lançamento?")
@@ -126,6 +132,7 @@ export default function FormLancamento() {
     const res = await fetch(`/api/lancamentos/${id}`, {
       method: 'DELETE',
     })
+    console.log(formData)
     setLoading(false)
     if (res.ok) {
       toast.success("Lançamento deletada com sucesso!")
@@ -152,12 +159,14 @@ export default function FormLancamento() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
+    setFixed(fixed)
     const payload = {
       ...formData,
       valor: parseFloat(formData.valor),
       multa: parseFloat(formData.multa) || 0,
       juros: parseFloat(formData.juros) || 0,
       usuario_id: '0', // substitua depois
+      
     }
      
     const res = await fetch('/api/lancamentos', {
@@ -176,6 +185,7 @@ export default function FormLancamento() {
         forma_de_pagamento: '',
         valor: '',
         tipo: '',
+        fixed:false,
         categoria: '',
         data_vencimento: '',
         data_pagamento: '',
@@ -275,7 +285,7 @@ onValueChange={(v: string) => handleSelectChange("categoria", v)}
 {data.map((grup)=>{
 return (
 <React.Fragment key={grup._id}>
-<SelectItem value={grup.nome}>{grup.nome}</SelectItem>
+<SelectItem value={grup.name}>{grup.name}</SelectItem>
 
 
 </React.Fragment>
@@ -308,7 +318,7 @@ return (
            
           </DialogHeader>
          
-          <div className="grid gap-4 ">
+          <div className="grid gap-5 ">
           <div>
             
         <Label className="p-2 ">Descrição</Label>
@@ -328,12 +338,14 @@ return (
           </SelectContent>
         </Select>
       </div>
-            <div className="grid gap-3">
-              <Label htmlFor="username-1">Valor</Label>
+      
+       <div >
+              <Label className="p-2"  htmlFor="username-1">Valor</Label>
               <Input name="valor" type="number" value={formData.valor} onChange={handleChange} required  />
-            </div>
-            <div>
-        <Label className="p-2">Tipo</Label>
+       </div>
+
+         <div className="grid grid-cols-4 gap-4">
+         <div><Label className="p-2">Tipo</Label>
         <Select value={formData.tipo} onValueChange={(v: string) => handleSelectChange('tipo', v)}>
           <SelectTrigger>
             <SelectValue placeholder="Selecione o tipo" />
@@ -343,7 +355,10 @@ return (
             <SelectItem value="receita">Receita</SelectItem>
           </SelectContent>
         </Select>
-      </div>
+        </div>
+        <div className=" ml-40  mt-2"> <Label className="p-2 ">Fixa</Label> <Switch checked={fixed} onCheckedChange={setFixed} /></div>
+        </div>
+        
       <div>
 
 <Label className="p-2">Categoria</Label>
@@ -361,8 +376,8 @@ onValueChange={(v: string) => handleSelectChange("categoria", v)}
 {data.map((grup)=>{
 return (
 <React.Fragment key={grup._id}>
-<SelectItem value={grup.nome}>{grup.nome}</SelectItem>
-<SelectLabel  >{grup.descricao}</SelectLabel>
+<SelectItem value={grup.description}>{grup.name}</SelectItem>
+<SelectLabel  >{grup.type}</SelectLabel>
 
 </React.Fragment>
 

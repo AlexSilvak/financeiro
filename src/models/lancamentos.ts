@@ -7,6 +7,7 @@ export interface ILancamento extends Document {
   valor: number;
   forma_de_pagamento:string;
   tipo: 'despesa' | 'receita';
+  fixed:boolean;
   categoria: string;
   data_vencimento: Date;
   data_pagamento?: Date;
@@ -27,6 +28,7 @@ const LancamentoSchema: Schema = new Schema({
   forma_de_pagamento:{ type: String, required: true, trim: true },
   valor: { type: Number, required: true, min: 0 },
   tipo: { type: String, required: true, enum: ['despesa', 'receita'] },
+  fixed: { type: Boolean, required: true},
   categoria: { type: String, required: true, trim: true },
   data_vencimento: { type: Date, required: true },
   data_pagamento: { type: Date, default: null },

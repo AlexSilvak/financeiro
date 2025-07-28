@@ -64,7 +64,7 @@ const data = {
         },
         {
           title: "Lançamentos",
-          url: "/lancamentos",
+          url: "/transactions",
         },
         {
           title: "Categorias",
