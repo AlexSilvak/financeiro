@@ -5,56 +5,19 @@ import mongoose from "mongoose";
 import Transaction from "@/models/transactions";
 import { connectDB } from "@/lib/mongodb";
 
-// POST /api/transactions
+
+
 export async function POST(req: NextRequest) {
   try {
-    await connectDB();
-    const body = await req.json();
+    await connectDB()
+    const data = await req.json()
 
-    const {
-      description,
-      payment_method,
-      amount,
-      type,
-      category,
-      due_date,
-      payment_date,
-      status,
-      notes,
-      recurring,
-      user_id,
-      created_at,
-    } = body;
+    const newTransaction = await Transaction.create(data)
 
-    if (!description || !amount || !type || !category) {
-      return NextResponse.json(
-        { error: "Required fields are missing" },
-        { status: 400 }
-      );
-    }
-
-    const newTransaction = await Transaction.create({
-      description,
-      payment_method,
-      amount,
-      type,
-      category,
-      due_date,
-      payment_date,
-      status,
-      notes,
-      recurring,
-      user_id,
-      created_at,
-    });
-
-    return NextResponse.json(newTransaction, { status: 201 });
+    return NextResponse.json({ message: 'Transação criada com sucesso', data: newTransaction }, { status: 201 })
   } catch (error: any) {
-    console.error("[ERROR_CREATE_TRANSACTION]", error);
-    return NextResponse.json(
-      { error: "Error while creating transaction" },
-      { status: 500 }
-    );
+    console.error(error)
+    return NextResponse.json({ error: 'Erro ao criar transação' }, { status: 500 })
   }
 }
 

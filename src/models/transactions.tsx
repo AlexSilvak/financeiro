@@ -10,7 +10,7 @@ export interface ITransaction extends Document {
   category: string;
   due_date: Date;
   payment_date?: Date;
-  status: 'pending' | 'processing' | 'success' | 'failed';
+  status: 'pendente' | 'pago' |  'falhou';
   notes?: string;
   recurring?: boolean;
   created_at: Date;
@@ -25,7 +25,7 @@ const TransactionSchema: Schema = new Schema({
   category: { type: String, required: true, trim: true },
   due_date: { type: Date, required: true },
   payment_date: { type: Date, default: null },
-  status: { type: String, enum: ['pending' , 'processing' ,'success' , 'failed'], default: 'pending' },
+  status: { type: String, enum: ['pendente' , 'pago' ,'concluido' ], default: 'pendente' },
   notes: { type: String, default: '', trim: true },
   recurring: { type: Boolean, default: false },
   created_at: { type: Date, default: Date.now },

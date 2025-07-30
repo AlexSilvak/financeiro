@@ -7,7 +7,9 @@ type TransactionParams = {
   to?: string
 }
 
-type Transaction = {
+
+type Payment={
+
   id: string
   description: string
   payment_method: string
@@ -16,7 +18,7 @@ type Transaction = {
   category: string
   due_date: string
   payment_date?: string
-  status: 'pending' | 'paid' | 'received'
+  status: 'pendente' | 'pago' | 'concluido'
   notes?: string
   recurring?: boolean
   created_at: string
@@ -24,9 +26,9 @@ type Transaction = {
 }
 
 type UseTransactionsReturn = {
-  transactions: Transaction[]
+  transactions: Payment[]
   isLoading: boolean
-  isError: any
+  isError: string
 }
 
 const fetcher = (url: string) => fetch(url).then(res => res.json())
@@ -34,7 +36,7 @@ const fetcher = (url: string) => fetch(url).then(res => res.json())
 export function useTransactions(params?: TransactionParams): UseTransactionsReturn {
   const query = new URLSearchParams(params as Record<string, string>).toString()
   const { data, error, isLoading } = useSWR(`/api/transactions?${query}`, fetcher)
-
+  console.log(data)
   return {
     transactions: data?.transactions || [],
     isLoading,

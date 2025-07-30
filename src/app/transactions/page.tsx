@@ -4,16 +4,22 @@
 import { useTransactions } from '@/hooks/useTransactions'
 import { DataTable } from './data-table'
 import { columns } from './columns'
-
+import Loading from "@/components/Loading";
+ 
 export default function Page() {
-  const { transactions, isLoading, isError } = useTransactions()
 
-  if (isLoading) return <div>Carregando...</div>
-  if (isError) return <div>Erro ao carregar dados</div>
+  const { transactions, isLoading, isError ,mutate} = useTransactions()
 
   return (
-    <div className="p-4">
-      <DataTable columns={columns} data={transactions} />
+   
+   
+ <div className="p-4">
+      
+      <DataTable columns={columns} data={transactions}  mutate={mutate} />
+       <div className='ml-200 mt-20'>
+      {isLoading && <Loading/>}
+    </div>
+      
     </div>
   )
 }
