@@ -63,7 +63,7 @@ export function FormTransaction({ onSuccess }: FormTransactionProps) {
   const onSubmit = async (data: FormValues) => {
     try {
       await createTransaction(data)
-      toast.success('Transação criada com sucesso!')
+      
       mutate('/api/transactions')
       form.reset()
       onSuccess?.()
