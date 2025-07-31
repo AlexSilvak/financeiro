@@ -55,7 +55,7 @@ import { useDeleteTransaction } from '@/hooks/useDeleteTransaction'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { FormTransaction } from '@/components/FormTransaction'
-import ComboboxFormDemo from '@/components/ComboboxFormDemo'
+
 
 import {
   AlertDialog,
@@ -77,19 +77,28 @@ interface DataTableProps<TData, TValue> {
 
 function RowActions({ transactionId }: { transactionId: string }) {
   const [open, setOpen] = useState(false)
+  
+
+
   const { handleSubmit } = useForm()
   const { trigger: deleteTransaction, isMutating } = useDeleteTransaction() 
+  
+  const handleOpen =()=>setOpen(true)
+  const handleClose=()=>setOpen(false)
 
-  const onDelete = async () => {
-    try {
-      await deleteTransaction({ id: transactionId })
-      toast.success('Transação deletada com sucesso!')
-      mutate('/api/transactions')
-      
-    } catch (error: any) {
-      toast.error(error.message || 'Erro ao deletar')
-    }
+
+ const onDelete = async () => {
+  try {
+    await deleteTransaction({ id: transactionId })
+    toast.success('Transação deletada com sucesso!')
+    mutate('/api/transactions') // Apenas uma chamada é suficiente
+    setOpen(false) // Fecha o Dialog após sucesso
+    location.reload()
+  } catch (error: any) {
+    toast.error(error.message || 'Erro ao deletar')
   }
+}
+
   return (
     
 <DropdownMenu>
@@ -102,11 +111,6 @@ function RowActions({ transactionId }: { transactionId: string }) {
       <DropdownMenuContent align='start' className='w-40'>
         <NewFormTransaction />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
-            <PencilLine className="mr-2 h-4 w-4" />
-            Editar
-          </DropdownMenuItem>
-
           <DropdownMenuSeparator/>
           {/* Botão com Dialog para confirmação */}
                <Dialog open={open} onOpenChange={setOpen}>
@@ -118,8 +122,7 @@ function RowActions({ transactionId }: { transactionId: string }) {
     <AlertDialogHeader>
       <AlertDialogTitle>Deseja excluir este lançamento?</AlertDialogTitle>
       <AlertDialogDescription>
-        This action cannot be undone. This will permanently delete your account
-        and remove your data from our servers.
+        Exclusão de lançamentos financeiros.
       </AlertDialogDescription>
     </AlertDialogHeader>
     <AlertDialogFooter>
@@ -127,7 +130,7 @@ function RowActions({ transactionId }: { transactionId: string }) {
      <AlertDialogAction
   onClick={() => {
     handleSubmit(onDelete)(); // Chama a função de submit
-    setOpen(false);           // Fecha o dialog
+    handleClose()           // Fecha o dialog
   }}
   disabled={isMutating}
 >
@@ -143,26 +146,39 @@ function RowActions({ transactionId }: { transactionId: string }) {
   )
 }
 
-
+//formulario do menu 
 function NewFormTransaction() {
   const [open, setOpen] = useState(false)
+
+  const handleSuccess = () => {
+    setOpen(false) // Fecha o dialog
+    mutate('/api/transactions') // Dá refresh nos dados
+    toast.success('Transação salva com sucesso!')
+     
+  }
+
   return (
+    
     <Dialog open={open} onOpenChange={setOpen}>
-      <div className="flex gap-2 items-center ">
+      <div className="flex gap-2 items-center">
         <DialogTrigger asChild>
-          <Button variant="ghost" className='w-full max-w-xs justify-start '><PlusCircleIcon />Novo</Button>
+          <Button variant="ghost" className="w-full max-w-xs justify-start">
+            <PlusCircleIcon />
+            Novo
+          </Button>
         </DialogTrigger>
       </div>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            <FormTransaction/>
+            <FormTransaction onSuccess={handleSuccess} />
           </DialogTitle>
         </DialogHeader>
       </DialogContent>
     </Dialog>
   )
 }
+
 
 export function DataTable<TData, TValue>({
   columns,
@@ -200,6 +216,7 @@ export function DataTable<TData, TValue>({
         />
     
         <div className='flex grid-cols-1 gap-2'>
+          
           <NewFormTransaction />
           <Button
             variant="outline"

@@ -36,7 +36,11 @@ const formSchema = z.object({
 
 type FormValues = z.infer<typeof formSchema>
 
-export function FormTransaction() {
+interface FormTransactionProps{
+  onSuccess?:()=>void
+}
+
+export function FormTransaction({ onSuccess }: FormTransactionProps) {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -53,7 +57,7 @@ export function FormTransaction() {
       user_id: '',
     },
   })
-
+   
   const { trigger: createTransaction, isMutating } = useCreateTransaction()
 
   const onSubmit = async (data: FormValues) => {
@@ -62,6 +66,9 @@ export function FormTransaction() {
       toast.success('Transação criada com sucesso!')
       mutate('/api/transactions')
       form.reset()
+      onSuccess?.()
+      
+
     } catch (error: any) {
       toast.error(error.message || 'Erro ao criar transação')
     }
@@ -243,7 +250,7 @@ export function FormTransaction() {
           )}
         />
         
-        <Button type="submit" disabled={isMutating} className="w-full">
+        <Button type="submit" disabled={isMutating} className="w-full"  >
           {isMutating ? 'Salvando...' : 'Salvar'}
         </Button>
       </form>
