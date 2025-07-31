@@ -20,6 +20,6 @@ export default function Page() {
       {isLoading && <Loading/>}
     </div>
       
-    </div>
-  )
+    </div> 
+  ) 
 }

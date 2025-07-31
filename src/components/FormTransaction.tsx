@@ -43,7 +43,7 @@ export function FormTransaction() {
       description: '',
       payment_method: '',
       amount: 0,
-      type: 'income',
+      type: 'i-ncome',
       category: '',
       due_date: '',
       payment_date: '',

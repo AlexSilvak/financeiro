@@ -55,19 +55,7 @@ import { useDeleteTransaction } from '@/hooks/useDeleteTransaction'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { FormTransaction } from '@/components/FormTransaction'
-import ComboboxFormDemo from '@/components/ComboboxFormDemo'
 
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -106,37 +94,37 @@ function RowActions({ transactionId }: { transactionId: string }) {
             <PencilLine className="mr-2 h-4 w-4" />
             Editar
           </DropdownMenuItem>
-
+          <DropdownMenuSeparator />
+          <ButtonDelRow/>
           <DropdownMenuSeparator/>
           {/* Botão com Dialog para confirmação */}
-               <Dialog open={open} onOpenChange={setOpen}>
-          <AlertDialog>
-  <AlertDialogTrigger >
-  <div className='flex grid-cols-1 justify-baseline ml-2 align-baseline '> <Trash2 className="mr-2 h-4 w-4 " /> Delete</div>
-  </AlertDialogTrigger>
-  <AlertDialogContent>
-    <AlertDialogHeader>
-      <AlertDialogTitle>Deseja excluir este lançamento?</AlertDialogTitle>
-      <AlertDialogDescription>
-        This action cannot be undone. This will permanently delete your account
-        and remove your data from our servers.
-      </AlertDialogDescription>
-    </AlertDialogHeader>
-    <AlertDialogFooter>
-      <AlertDialogCancel >Cancelar</AlertDialogCancel>
-     <AlertDialogAction
-  onClick={() => {
-    handleSubmit(onDelete)(); // Chama a função de submit
-    setOpen(false);           // Fecha o dialog
-  }}
-  disabled={isMutating}
->
-  {isMutating ? 'Deletando...' : 'Confirmar'}
-</AlertDialogAction>
-    </AlertDialogFooter>
-  </AlertDialogContent>
-</AlertDialog>
+          <Dialog open={open} onOpenChange={setOpen}>
+            <DialogTrigger asChild>
+              <DropdownMenuItem className="text-destructive">
+                <Trash2 className="mr-2 h-4 w-4" />
+                Deletar
+              </DropdownMenuItem>
+            </DialogTrigger>
+            <DialogContent>
+              <DialogHeader>
+                <DialogTitle>Confirmar exclusão</DialogTitle>
+              </DialogHeader>
+              <p>Tem certeza que deseja deletar esta transação?</p>
+              <div className="flex justify-end gap-2 mt-4">
+                <Button variant="ghost" onClick={() => setOpen(false)}>
+                  Cancelar
+                </Button>
+                <Button
+                  variant="destructive"
+                  onClick={handleSubmit(onDelete)}
+                  disabled={isMutating}
+                >
+                  {isMutating ? 'Deletando...' : 'Confirmar'}
+                </Button>
+              </div>
+            </DialogContent>
           </Dialog>
+          
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
@@ -150,7 +138,7 @@ function NewFormTransaction() {
     <Dialog open={open} onOpenChange={setOpen}>
       <div className="flex gap-2 items-center ">
         <DialogTrigger asChild>
-          <Button variant="ghost" className='w-full max-w-xs justify-start '><PlusCircleIcon />Novo</Button>
+          <Button variant="ghost" className='w-full max-w-xs justify-start h-8'><PlusCircleIcon />Novo</Button>
         </DialogTrigger>
       </div>
       <DialogContent>
@@ -160,6 +148,17 @@ function NewFormTransaction() {
           </DialogTitle>
         </DialogHeader>
       </DialogContent>
+    </Dialog>
+  )
+}
+
+function ButtonDelRow(){
+  const [open,setOpen]=useState(false)
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger>
+      <Button variant="ghost"><Trash2/>Delete</Button>
+      </DialogTrigger>
     </Dialog>
   )
 }
@@ -198,9 +197,8 @@ export function DataTable<TData, TValue>({
           onChange={handleSearchChange}
           className="w-64"
         />
-    
-        <div className='flex grid-cols-1 gap-2'>
-          <NewFormTransaction />
+    <NewFormTransaction />
+        <div>
           <Button
             variant="outline"
             onClick={handlePreviousPage}
@@ -216,7 +214,6 @@ export function DataTable<TData, TValue>({
           >
             Próximo
           </Button>
-          
         </div>
       </div>
 

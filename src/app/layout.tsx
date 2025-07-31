@@ -92,7 +92,7 @@ export default function RootLayout({
               </BreadcrumbList>
             </Breadcrumb>
             
-            <div className="ml-300"><ModeToggle/></div>
+            <div className="flex justify-stretchflex justify-end"><ModeToggle/></div>
           </div>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
