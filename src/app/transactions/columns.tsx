@@ -8,6 +8,9 @@ import {
   IconCircleCheckFilled,
   IconLoader,
 } from "@tabler/icons-react"
+
+
+
 // Definição do tipo
 export type Payment = {
   id: string
@@ -45,6 +48,7 @@ export const columns: ColumnDef<Payment>[] = [
   {
     accessorKey: 'description',
     header: 'Descrição',
+    meta: { editable: true },
   },
   {
     accessorKey: 'amount',

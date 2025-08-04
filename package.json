@@ -49,6 +49,7 @@
     "next": "15.3.4",
     "next-auth": "^4.24.11",
     "next-themes": "^0.4.6",
+    "node-html-parser": "^7.0.1",
     "ofx-js": "^0.2.0",
     "pdf-parse": "^1.1.1",
     "pdfreader": "^3.0.7",
@@ -65,6 +66,8 @@
     "swr": "^2.3.4",
     "tailwind-merge": "^3.3.1",
     "toast": "^0.5.4",
+    "uuid": "^11.1.0",
+    "writefile": "^0.2.8",
     "zod": "^3.25.67"
   },
   "devDependencies": {

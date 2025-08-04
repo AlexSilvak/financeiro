@@ -18,18 +18,18 @@ export interface ITransaction extends Document {
 }
 
 const TransactionSchema: Schema = new Schema({
-  description: { type: String, required: true, trim: true },
-  payment_method: { type: String, required: true, trim: true },
-  amount: { type: Number, required: true, min: 0 },
-  type: { type: String, required: true, enum: ['expense', 'income'] },
-  category: { type: String, required: true, trim: true },
-  due_date: { type: Date, required: true },
+  description: { type: String, trim: true },
+  payment_method: { type: String,  trim: true },
+  amount: { type: Number,  min: 0 },
+  type: { type: String,  enum: ['expense', 'income'] },
+  category: { type: String,  trim: true },
+  due_date: { type: Date,default: null  },
   payment_date: { type: Date, default: null },
   status: { type: String, enum: ['pendente' , 'pago' ,'concluido' ], default: 'pendente' },
   notes: { type: String, default: '', trim: true },
   recurring: { type: Boolean, default: false },
   created_at: { type: Date, default: Date.now },
-  user_id: { type: String, required: true },
+  user_id: { type: String},
 });
 
 export default mongoose.models.Transaction ||
