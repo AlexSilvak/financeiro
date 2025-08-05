@@ -35,8 +35,9 @@ export async function POST(req: NextRequest) {
 console.log('[DEBUG] XML convertido:', xml.slice(0, 1000)) // mostra o começo do XML
 
 const root = parse(xml)
-const stmtTrns = root.querySelectorAll('STMTTRN')
-console.log('[DEBUG] Transações encontradas:', stmtTrns.length)
+const stmtTrns = root.querySelectorAll('FITID') 
+
+console.log('[DEBUG] Transações encontradas:', root)
 
     // Criar array de transações válidas
     const transactions = stmtTrns.map((node) => {
