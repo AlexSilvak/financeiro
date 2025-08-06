@@ -1,90 +1,165 @@
 // app/lancamentos/page.tsx
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card"
-import { cn } from "@/lib/utils"
-import { Settings } from 'lucide-react';
-type Lancamento = {
-  _id: string
-  descricao: string
-  forma_de_pagamento: string
-  valor: number
-  tipo: "receita" | "despesa"
-  categoria: string
-  data_vencimento: string
+import { cn } from "@/lib/utils";
+import { Settings } from "lucide-react";
+import { IconTrendingDown, IconTrendingUp } from "@tabler/icons-react"
+import { Badge } from "@/components/ui/badge"
+import {
+  Card,
+  CardAction,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+  CardContent 
+} from "@/components/ui/card"
+
+interface ITransaction {
+  _id: string;
+  description: string;
+  payment_method: string;
+  amount: number;
+  type: "income" | "expense";
+  category: string;
+  due_date: string; // string para compatibilidade com fetch
 }
 
 const meses = [
   "JAN", "FEV", "MAR", "ABR", "MAI", "JUN",
   "JUL", "AGO", "SET", "OUT", "NOV", "DEZ"
-]
+];
 
-async function getLancamentos(): Promise<Lancamento[]> {
-  const res = await fetch("http://localhost:3000/api/lancamentos", {
+async function getTransactions(): Promise<ITransaction[]> {
+  const res = await fetch("http://localhost:3000/api/transactions", {
     cache: "no-store",
-  })
-  const json = await res.json()
-  return json.lancamentos || []
+  });
+  const json = await res.json();
+  return json.transactions || [];
 }
 
 function formatCurrency(value: number) {
   return value.toLocaleString("pt-BR", {
     style: "currency",
     currency: "BRL",
-    minimumFractionDigits: 0
-  })
+    minimumFractionDigits: 0,
+  });
 }
 
-function agruparPorMesCategoria(lancamentos: Lancamento[]) {
-  const resultado: Record<string, Record<string, number>> = {}
+function agruparPorMesCategoria(transactions: ITransaction[]) {
+  const resultado: Record<string, Record<string, number>> = {};
 
-  for (const l of lancamentos) {
-    const data = new Date(l.data_vencimento)
-    const mes = meses[data.getMonth()]
-    const chave = `${l.tipo.toUpperCase()} - ${l.categoria}`
+  for (const l of transactions) {
+    const data = new Date(l.due_date);
+    const mes = meses[data.getMonth()];
+    const chave = `${l.type.toUpperCase()} - ${l.category}`;
 
-    resultado[chave] = resultado[chave] || {}
-    resultado[chave][mes] = (resultado[chave][mes] || 0) + l.valor
+    resultado[chave] = resultado[chave] || {};
+    resultado[chave][mes] = (resultado[chave][mes] || 0) + l.amount;
   }
 
-  return resultado
+  return resultado;
 }
 
-export default async function LancamentosDRE() {
-  const lancamentos = await getLancamentos()
+export default async function TransactionsLancamentosDRE() {
+  const transactions = await getTransactions();
 
-  const receitas = lancamentos.filter(l => l.tipo === "receita").reduce((a, l) => a + l.valor, 0)
-  const despesas = lancamentos.filter(l => l.tipo === "despesa").reduce((a, l) => a + l.valor, 0)
-  const saldo = receitas - despesas
+  const receitas = transactions
+    .filter((l) => l.type === "income")
+    .reduce((total, l) => total + l.amount, 0);
 
-  const agrupado = agruparPorMesCategoria(lancamentos)
+  const despesas = transactions
+    .filter((l) => l.type === "expense")
+    .reduce((total, l) => total + l.amount, 0);
+
+  const saldo = receitas - despesas;
+
+  const agrupado = agruparPorMesCategoria(transactions);
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-8 space-y-6">
-      <div className="flex grid-cols-2 gap-2"><Button><Settings />Parâmetros</Button></div>
+      <div className="flex grid-cols-2 gap-2">
+        <Button variant="outline">
+          <Settings className="mr-2 h-4 w-4" />
+          Parâmetros
+        </Button>
+      </div>
+
+      <div className="*:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card dark:*:data-[slot=card]:bg-card grid grid-cols-1 gap-4 px-4 *:data-[slot=card]:bg-gradient-to-t *:data-[slot=card]:shadow-xs lg:px-6 @xl/main:grid-cols-2 @5xl/main:grid-cols-4">
+    
+     
+ 
+  
+    </div>
+
       <h1 className="text-2xl font-bold mb-4">Demonstrativo de Resultados</h1>
 
       {/* Totais */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-        <Card>
-          <CardContent className="p-4">
-            <p className="text-sm text-muted-foreground">Total de Receitas</p>
-            <p className="text-green-600 text-lg font-semibold">{formatCurrency(receitas)}</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4">
-            <p className="text-sm text-muted-foreground">Total de Despesas</p>
-            <p className="text-red-600 text-lg font-semibold">{formatCurrency(despesas)}</p>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardContent className="p-4">
-            <p className="text-sm text-muted-foreground">Saldo</p>
-            <p className={cn("text-lg font-semibold", saldo >= 0 ? "text-green-700" : "text-red-700")}>
-              {formatCurrency(saldo)}
-            </p>
-          </CardContent>
-        </Card>
+     
+         <Card className="@container/card">
+        <CardHeader>
+          <CardDescription>Total de Receitas</CardDescription>
+          <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl text-green-600">
+            ${formatCurrency(receitas)}
+          </CardTitle>
+          <CardAction>
+            <Badge variant="outline">
+              <IconTrendingUp />
+              +12.5%
+            </Badge>
+          </CardAction>
+        </CardHeader>
+        <CardFooter className="flex-col items-start gap-1.5 text-sm">
+          <div className="line-clamp-1 flex gap-2 font-medium">
+            Trending up this month <IconTrendingUp className="size-4" />
+          </div>
+          <div className="text-muted-foreground">
+            Visitors for the last 6 months
+          </div>
+        </CardFooter>
+      </Card>
+         <Card className="@container/card">
+        <CardHeader>
+          <CardDescription>Total de Despesas</CardDescription>
+          <CardTitle className="text-2xl font-semibold tabular-nums @[250px]/card:text-3xl text-red-60 text-red-600">
+            {formatCurrency(despesas)}
+          </CardTitle>
+          <CardAction>
+            <Badge variant="outline">
+              <IconTrendingDown />
+              -20%
+            </Badge>
+          </CardAction>
+        </CardHeader>
+        <CardFooter className="flex-col items-start gap-1.5 text-sm">
+          <div className="line-clamp-1 flex gap-2 font-medium">
+            Down 20% this period <IconTrendingDown className="size-4" />
+          </div>
+          <div className="text-muted-foreground">
+            Acquisition needs attention
+          </div>
+        </CardFooter>
+      </Card>
+        <Card className="@container/card">
+        <CardHeader>
+          <CardDescription>Saldo</CardDescription>
+          <CardTitle className={cn("text-2xl font-semibold tabular-nums @[250px]/card:text-3xl", saldo >= 0 ? "text-green-700" : "text-red-700")}>
+          {formatCurrency(saldo)}
+          </CardTitle>
+          <CardAction>
+            <Badge variant="outline">
+              <IconTrendingUp />
+              +12.5%
+            </Badge>
+          </CardAction>
+        </CardHeader>
+        <CardFooter className="flex-col items-start gap-1.5 text-sm">
+          <div className="line-clamp-1 flex gap-2 font-medium">
+            Strong user retention <IconTrendingUp className="size-4" />
+          </div>
+          <div className="text-muted-foreground">Engagement exceed targets</div>
+        </CardFooter>
+      </Card>
       </div>
 
       {/* Tabela Estilo DRE */}
@@ -93,38 +168,41 @@ export default async function LancamentosDRE() {
           <thead className="bg-gray-100">
             <tr>
               <th className="text-left px-4 py-2 font-bold">CATEGORIAS</th>
-              {meses.map(mes => (
+              {meses.map((mes) => (
                 <th key={mes} className="px-2 py-2 font-bold text-center">{mes}</th>
               ))}
               <th className="px-2 py-2 font-bold text-center">ACUMULADO</th>
             </tr>
           </thead>
           <tbody>
-            {Object.entries(agrupado).map(([categoria, mesesValores]) => {
-              const acumulado = Object.values(mesesValores).reduce((s, v) => s + v, 0)
-              const isReceita = categoria.startsWith("RECEITA")
+            {Object.entries(agrupado).map(([categoria, valoresMes]) => {
+              const acumulado = Object.values(valoresMes).reduce((s, v) => s + v, 0);
+              const isReceita = categoria.startsWith("INCOME");
 
               return (
                 <tr key={categoria} className="border-t">
                   <td className="px-4 py-2 font-medium">{categoria}</td>
-                  {meses.map(mes => (
+                  {meses.map((mes) => (
                     <td key={mes} className="text-center px-2 py-2">
-                      {mesesValores[mes]
+                      {valoresMes[mes]
                         ? <span className={isReceita ? "text-green-600" : "text-red-600"}>
-                            {formatCurrency(mesesValores[mes])}
+                            {formatCurrency(valoresMes[mes])}
                           </span>
                         : "-"}
                     </td>
                   ))}
-                  <td className={cn("text-center px-2 py-2 font-semibold", isReceita ? "text-green-700" : "text-red-700")}>
+                  <td className={cn(
+                    "text-center px-2 py-2 font-semibold",
+                    isReceita ? "text-green-700" : "text-red-700"
+                  )}>
                     {formatCurrency(acumulado)}
                   </td>
                 </tr>
-              )
+              );
             })}
           </tbody>
         </table>
       </div>
     </div>
-  )
+  );
 }

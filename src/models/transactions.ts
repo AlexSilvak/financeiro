@@ -3,8 +3,8 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
 export interface ITransaction extends Document {
-  description: string;
-  payment_method: string;
+  description: string;    
+  payment_method: string;    
   amount: number;
   type: 'expense' | 'income';
   category: string;

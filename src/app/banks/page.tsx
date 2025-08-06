@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/dialog'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
-import { columns, Bancos } from './columns'
+import { columns,  Banks } from './columns'
 import { DataTable } from './data-table'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
@@ -22,7 +22,7 @@ import { toast } from 'sonner'
 
 export default function Page() {
   const [loading, setLoading] = useState(false)
-  const [data, setData] = useState<Bancos[]>([])
+  const [data, setData] = useState<Banks[]>([])
 
   const [form, setForm] = useState({
     name: '',
@@ -42,10 +42,10 @@ export default function Page() {
   const fetchData = async () => {
     try {
       setLoading(true)
-      const res = await axios.get('/api/bancos')
+      const res = await axios.get('/api/banks')
       setData(res.data)
     } catch (error) {
-      console.error('Erro ao buscar bancos', error)
+      console.error('Erro ao buscar banks', error)
     } finally {
       setLoading(false)
     }
@@ -78,7 +78,7 @@ export default function Page() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      await axios.post('/api/bancos', form)
+      await axios.post('/api/banks', form)
       toast.success('Banco cadastrado com sucesso!')
       await fetchData()
       setOpen(false)

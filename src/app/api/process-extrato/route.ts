@@ -33,10 +33,10 @@ export async function POST(req: NextRequest) {
 
   const xml = convertOFXtoXML(text)
 console.log('[DEBUG] XML convertido:', xml.slice(0, 1000)) // mostra o começo do XML
-
+console.log(xml) // mostra o começo do XML
 const root = parse(xml)
 const stmtTrns = root.querySelectorAll('FITID') 
-
+  
 console.log('[DEBUG] Transações encontradas:', root)
 
     // Criar array de transações válidas

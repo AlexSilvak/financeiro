@@ -26,6 +26,7 @@ function extractTransactions(text: string) {
   return trxBlocks.map((block) => ({
     trntype: extractValue(block, 'TRNTYPE'),
     amount: parseFloat(extractValue(block, 'TRNAMT')),
+    payment_method: extractValue(block, 'NAME'),
     date: parseOfxDate(extractValue(block, 'DTPOSTED').substring(0, 8)), // YYYYMMDD
     memo: extractValue(block, 'MEMO'),
     fitid: extractValue(block, 'FITID'),
@@ -51,7 +52,7 @@ export async function POST(req: NextRequest) {
   const bankId = extractValue(text, 'BANKID')
   const branchId = extractValue(text, 'BRANCHID')
   const transactions = extractTransactions(text)
-
+   console.log(transactions)
   const newStatement = await Statement.create({
     account_id: accountId,
     bank_id: bankId,

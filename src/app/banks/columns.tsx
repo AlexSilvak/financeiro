@@ -2,7 +2,7 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 
-export type Bancos = {
+export type Banks = {
   id: string
   name: string
   bank_code: string
@@ -17,7 +17,7 @@ export type Bancos = {
   number: string
 }
 
-export const columns: ColumnDef<Bancos>[] = [
+export const columns: ColumnDef< Banks>[] = [
   {
     accessorKey: "name",
     header: "Nome"

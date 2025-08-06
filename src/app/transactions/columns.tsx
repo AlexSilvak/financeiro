@@ -15,7 +15,7 @@ import {
 export type Payment = {
   id: string
   amount: number
-  status: 'pendente' | 'pago' | 'falhou'
+  status: string
   description: string
   payment_method: string
   type: 'income' | 'expense'
@@ -30,12 +30,8 @@ export const columns: ColumnDef<Payment>[] = [
     accessorKey: 'status',
     header: 'Status',
     cell: ({ row }) => {
-      const status = row.getValue<'status'>('status')
-      const statusMap: Record<Payment['status'], string> = {
-        pendente: 'Pendente',
-        pago: 'pago',
-        falhou: 'Falhou',
-      }
+      
+    
       return <Badge variant="outline" className="text-muted-foreground px-1.5">{row.original.status === "pago" ? (
           <IconCircleCheckFilled className="fill-green-500 dark:fill-green-400" />
         ) : (
@@ -68,10 +64,7 @@ export const columns: ColumnDef<Payment>[] = [
       )
     },
   },
-  {
-    accessorKey: 'payment_method',
-    header: 'Pagamento',
-  },
+
   {
     accessorKey: 'type',
     header: 'Tipo',
