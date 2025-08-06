@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { Statement } from '@/models/statement'
 import { connectDB } from '@/lib/mongodb'
+import { Statement } from '@/models/statements' // ← collection única
 
 // Extrai o conteúdo de uma tag específica
 function extractValue(text: string, tag: string): string {
@@ -9,7 +9,7 @@ function extractValue(text: string, tag: string): string {
   return match ? match[1].trim() : ''
 }
 
-
+// Converte data OFX para Date JS
 function parseOfxDate(dateStr: string): Date {
   const clean = dateStr.trim().slice(0, 8)
   const year = clean.slice(0, 4)
@@ -18,7 +18,7 @@ function parseOfxDate(dateStr: string): Date {
   return new Date(`${year}-${month}-${day}T00:00:00`)
 }
 
-// Extrai os blocos <STMTTRN> com regex e parseia os dados
+// Extrai os lançamentos do OFX
 function extractTransactions(text: string) {
   const trxRegex = /<STMTTRN>[\s\S]*?<\/STMTTRN>/g
   const trxBlocks = text.match(trxRegex) || []
@@ -27,7 +27,7 @@ function extractTransactions(text: string) {
     trntype: extractValue(block, 'TRNTYPE'),
     amount: parseFloat(extractValue(block, 'TRNAMT')),
     payment_method: extractValue(block, 'NAME'),
-    date: parseOfxDate(extractValue(block, 'DTPOSTED').substring(0, 8)), // YYYYMMDD
+    date: parseOfxDate(extractValue(block, 'DTPOSTED')),
     memo: extractValue(block, 'MEMO'),
     fitid: extractValue(block, 'FITID'),
   }))
@@ -45,20 +45,20 @@ export async function POST(req: NextRequest) {
 
   const arrayBuffer = await file.arrayBuffer()
   const text = Buffer.from(arrayBuffer).toString('utf8')
- // importante: arquivos .ofx costumam vir em ISO-8859-1
 
-  // Extração de metadados do extrato
   const accountId = extractValue(text, 'ACCTID')
   const bankId = extractValue(text, 'BANKID')
   const branchId = extractValue(text, 'BRANCHID')
+  const payment_method = extractValue(text, 'NAME')
   const transactions = extractTransactions(text)
-   console.log(transactions)
+
   const newStatement = await Statement.create({
     account_id: accountId,
     bank_id: bankId,
     branch_id: branchId,
+    payment_method,
     transactions,
-    raw_ofx: text,
+    imported_at: new Date(),
   })
 
   return NextResponse.json({
@@ -70,8 +70,6 @@ export async function POST(req: NextRequest) {
 
 export async function GET() {
   await connectDB()
-
   const statements = await Statement.find().sort({ imported_at: -1 }).limit(50)
-
   return NextResponse.json(statements)
 }

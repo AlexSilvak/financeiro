@@ -1,9 +1,11 @@
+// src/models/statements.ts
+
 import mongoose from 'mongoose'
 
 const transactionSchema = new mongoose.Schema({
   trntype: String,
   amount: Number,
-  payment_method: String,   
+  payment_method: String,
   date: Date,
   memo: String,
   fitid: String,
@@ -16,13 +18,16 @@ const statementSchema = new mongoose.Schema(
     branch_id: String,
     payment_method: String,
     transactions: [transactionSchema],
-    raw_ofx: String,
     imported_at: {
       type: Date,
       default: Date.now,
     },
   },
-  { collection: 'statements' }
+  {
+    collection: 'statements', // <- Aqui você fixa a collection
+  }
 )
 
-export const Statement = mongoose.models.Statement || mongoose.model('Statement', statementSchema)
+// Exporta apenas um model fixo para "statements"
+export const Statement =
+  mongoose.models.Statement || mongoose.model('Statement', statementSchema)

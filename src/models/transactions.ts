@@ -15,6 +15,7 @@ export interface ITransaction extends Document {
   recurring?: boolean;
   created_at: Date;
   user_id: string;
+  fitid:string;
 }
 
 const TransactionSchema: Schema = new Schema({
@@ -30,6 +31,7 @@ const TransactionSchema: Schema = new Schema({
   recurring: { type: Boolean, default: false },
   created_at: { type: Date, default: Date.now },
   user_id: { type: String},
+  fitid: { type: String, index: true, unique: false }, // Pode ou não ser único
 });
 
 export default mongoose.models.Transaction ||

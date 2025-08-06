@@ -16,8 +16,20 @@ export const columns: ColumnDef<Service>[] = [
     header: 'Status',
     cell: ({ row }) => {
       const status = row.original.status
-      const color = status === 'running' ? 'green' : status === 'stopped' ? 'red' : 'yellow'
-      return <Badge variant="outline" className={`text-${color}-500 border-${color}-500`}>{status}</Badge>
+      const statusColorMap: Record<string, string> = {
+        running: 'text-green-500 border-green-500',
+        stopped: 'text-red-500 border-red-500',
+        pending: 'text-yellow-500 border-yellow-500',
+      }
+
+      return (
+        <Badge
+          variant="outline"
+          className={statusColorMap[status] ?? 'text-gray-500 border-gray-500'}
+        >
+          {status}
+        </Badge>
+      )
     },
   },
   {

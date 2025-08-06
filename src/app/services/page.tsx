@@ -1,39 +1,25 @@
+// src/app/services/page.tsx
+
 import { columns } from './columns'
-import { DataTable } from './data-table'
+import { DataTable } from '@/components/ui/data-table'
 import { Service } from './types'
+import { CreateServiceButton } from './service-actions'
+async function getServices(): Promise<Service[]> {
+  const res = await fetch('http://localhost:3000/api/services', {
+    next: { revalidate: 5 }, // SSR com cache de 5s (ou use SWR para client-side)
+  })
 
-const data: Service[] = [
-  {
-    id: '1',
-    name: 'Auth Service',
-    status: 'running',
-    created_at: '2025-08-01T10:00:00Z',
-    updated_at: '2025-08-05T12:00:00Z',
-    log_service: 'Started successfully',
-  },
-  {
-    id: '2',
-    name: 'Billing Service',
-    status: 'stopped',
-    created_at: '2025-07-20T08:30:00Z',
-    updated_at: '2025-08-03T09:45:00Z',
-    log_service: 'Stopped by admin',
-  },
-  {
-    id: '3',
-    name: 'Report Generator',
-    status: 'restarting',
-    created_at: '2025-06-15T14:45:00Z',
-    updated_at: '2025-08-04T15:00:00Z',
-    log_service: 'Restarting due to config update',
-  },
-]
+  return res.json()
+}
 
-export default function Page() {
+export default async function ServicesPage() {
+  const data = await getServices()
+
   return (
-    <div className="p-4">
-      <h1 className="text-xl font-bold mb-4">Service Monitor</h1>
+    <div className="p-6 space-y-4">
+      <h1 className="text-2xl font-bold">Serviços de Importação</h1>
       <DataTable columns={columns} data={data} />
+      <CreateServiceButton />
     </div>
   )
 }

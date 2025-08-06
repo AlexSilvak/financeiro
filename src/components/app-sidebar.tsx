@@ -747,14 +747,14 @@ const data = {
         },
       ],
     },
-     {
-      title: "IA",
+    {
+      title: "Serviços",
       url: "#",
       icon: Settings2,
       items: [
         {
-          title: "Processar Extratos",
-          url: "/extratos",
+          title: "Painel de Serviços",
+          url: "/services",
         },
         {
           title: "Pessoa",
@@ -776,6 +776,30 @@ const data = {
           title: "Tipo",
           url: "#",
         },
+        {
+          title: "Status",
+          url: "#",
+        },
+        {
+          title: "Backup Banco de dados",
+          url: "/backup",
+        },
+      ],
+    },
+     {
+      title: "IA",
+      url: "#",
+      icon: Settings2,
+      items: [
+        {
+          title: "Painel de Serviços",
+          url: "/services",
+        },
+        {
+          title: "Criar Serviços",
+          url: "#",
+        },
+      
         {
           title: "Status",
           url: "#",
