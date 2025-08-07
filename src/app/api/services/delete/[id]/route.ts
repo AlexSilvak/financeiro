@@ -24,7 +24,7 @@ export async function DELETE(
       return NextResponse.json({ error: 'Serviço não encontrado' }, { status: 404 })
     }
 
-    // Remover job relacionado (se existir)
+    // Remover jobs relacionados na fila BullMQ
     const jobs: Job[] = await queue.getJobs([
       'waiting',
       'active',
@@ -36,11 +36,11 @@ export async function DELETE(
     for (const job of jobs) {
       if (job.data?.serviceId === id) {
         await job.remove()
-        console.log(`Job removido da fila para o serviço ${id}`)
+        console.log(`Job removido da fila para serviço ${id}`)
       }
     }
 
-    // Remover serviço do MongoDB
+    // Remover serviço no MongoDB
     await service.deleteOne()
 
     return NextResponse.json({ message: 'Serviço removido com sucesso' })
