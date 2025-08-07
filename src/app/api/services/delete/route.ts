@@ -1,18 +1,20 @@
-// /api/services/delete/route.ts
 import { NextResponse } from 'next/server'
+import { connectDB } from '@/lib/mongodb'
+import Service from '@/models/service'
 
 export async function DELETE(req: Request) {
-  const { searchParams } = new URL(req.url)
-  const id = searchParams.get('id')
-
-  if (!id) {
-    return NextResponse.json({ error: 'ID do serviço não fornecido.' }, { status: 400 })
-  }
-
   try {
-    // Exclua do banco de dados aqui com base no ID
-    return NextResponse.json({ message: `Serviço ${id} excluído com sucesso.` }, { status: 200 })
-  } catch (err: any) {
-    return NextResponse.json({ error: err.message || 'Erro ao excluir o serviço' }, { status: 500 })
+    await connectDB()
+    const { serviceId } = await req.json()
+
+    const deleted = await Service.findByIdAndDelete(serviceId)
+
+    if (!deleted) {
+      return NextResponse.json({ error: 'Serviço não encontrado' }, { status: 404 })
+    }
+
+    return NextResponse.json({ message: 'Serviço deletado com sucesso' })
+  } catch (error) {
+    return NextResponse.json({ error: 'Erro ao deletar serviço', details: `${error}` }, { status: 500 })
   }
 }

@@ -1,22 +1,11 @@
 import { NextResponse } from 'next/server'
-import { connectDB } from '@/lib/mongodb'
 import Service from '@/models/service'
-
-// Tipagem para o corpo da requisição
-interface CreateServiceRequest {
-  name: string
-  user_id: string
-  statement_id: string
-}
 
 export async function POST(req: Request) {
   try {
-    await connectDB()
-
-    const body = (await req.json()) as CreateServiceRequest
+    const body = await req.json()
     const { name, user_id, statement_id } = body
 
-    // Validação simples
     if (!name || !user_id || !statement_id) {
       return NextResponse.json(
         { error: 'Campos obrigatórios faltando' },
@@ -24,7 +13,6 @@ export async function POST(req: Request) {
       )
     }
 
-    // Cria o novo serviço
     const newService = await Service.create({
       name,
       user_id,
@@ -35,9 +23,8 @@ export async function POST(req: Request) {
 
     return NextResponse.json(newService, { status: 201 })
   } catch (error) {
-    console.error('[SERVICE_CREATE_ERROR]', error)
     return NextResponse.json(
-      { error: 'Erro ao criar serviço', details: `${error}` },
+      { error: 'Erro ao criar serviço', details: error },
       { status: 500 }
     )
   }

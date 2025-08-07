@@ -52,6 +52,7 @@
     "next-auth": "^4.24.11",
     "next-themes": "^0.4.6",
     "node-html-parser": "^7.0.1",
+    "nodemon": "^3.1.10",
     "ofx-js": "^0.2.0",
     "pdf-parse": "^1.1.1",
     "pdfreader": "^3.0.7",
