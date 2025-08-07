@@ -3,28 +3,28 @@
 import mongoose from 'mongoose'
 
 const transactionSchema = new mongoose.Schema({
-  trntype: String,
-  amount: Number,
-  payment_method: String,
-  date: Date,
-  memo: String,
-  fitid: String,
+  trntype: { type: String, required: true },
+  amount: { type: Number, required: true },
+  payment_method: { type: String, default: '' },
+  date: { type: Date, required: true },
+  memo: { type: String, default: '' },
+  fitid: { type: String, required: true, unique: true },
 })
 
 const statementSchema = new mongoose.Schema(
   {
-    account_id: String,
-    bank_id: String,
-    branch_id: String,
-    payment_method: String,
-    transactions: [transactionSchema],
+    account_id: { type: String, required: true },
+    bank_id: { type: String, required: true },
+    branch_id: { type: String, required: true },
+    payment_method: { type: String, default: '' },
+    transactions: { type: [transactionSchema], default: [] },
     imported_at: {
       type: Date,
       default: Date.now,
     },
   },
   {
-    collection: 'statements', // <- Aqui você fixa a collection
+    collection: 'statements',
   }
 )
 

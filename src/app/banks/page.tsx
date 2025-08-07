@@ -26,7 +26,7 @@ export default function Page() {
 
   const [form, setForm] = useState({
     name: '',
-    bank_code: '',
+    bank_id: '',
     agency: {
       number: '',
       address: '',
@@ -85,7 +85,7 @@ export default function Page() {
       // reset
       setForm({
         name: '',
-        bank_code: '',
+        bank_id: '',
         agency: {
           number: '',
           address: '',
@@ -127,11 +127,11 @@ export default function Page() {
               </div>
 
               <div className="grid gap-2">
-                <Label htmlFor="bank_code">Código do Banco</Label>
+                <Label htmlFor="bank_id">Código do Banco</Label>
                 <Input
-                  id="bank_code"
-                  value={form.bank_code}
-                  onChange={(e) => handleChange('bank_code', e.target.value)}
+                  id="bank_id"
+                  value={form.bank_id}
+                  onChange={(e) => handleChange('bank_id', e.target.value)}
                 />
               </div>
 

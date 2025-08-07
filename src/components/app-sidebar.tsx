@@ -112,7 +112,7 @@ const data = {
         },
          {
           title: "Estratos",
-          url: "/dashboard",
+          url: "/statements",
         },
          {
           title: "Fluxo de Caixa",

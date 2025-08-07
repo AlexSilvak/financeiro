@@ -3,7 +3,7 @@ import  { Schema, Document, model, models } from 'mongoose'
 
 export interface IBank extends Document {
   name: string
-  bank_code: string
+  bank_id: string
   agency: {
     number: string
     name?: string
@@ -21,7 +21,7 @@ export interface IBank extends Document {
 const BankSchema = new Schema<IBank>(
   {
     name: { type: String, required: true },
-    bank_code: { type: String, required: true },
+    bank_id: { type: String, required: true },
 
     agency: {
       number: { type: String},

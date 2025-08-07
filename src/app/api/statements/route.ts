@@ -67,9 +67,23 @@ export async function POST(req: NextRequest) {
     id: newStatement._id,
   })
 }
+export async function GET(req: NextRequest) {
+  try {
+    await connectDB()
 
-export async function GET() {
-  await connectDB()
-  const statements = await Statement.find().sort({ imported_at: -1 }).limit(50)
-  return NextResponse.json(statements)
+    const { searchParams } = new URL(req.url)
+    const bank_id = searchParams.get('bank_id')
+    const account_id = searchParams.get('account_id')
+
+    const filter: Record<string, any> = {}
+
+    if (bank_id) filter.bank_id = bank_id
+    if (account_id) filter.account_id = account_id
+
+    const statements = await Statement.find(filter).sort({ imported_at: -1 }).limit(50)
+
+    return NextResponse.json(statements)
+  } catch (error) {
+    return NextResponse.json({ error: 'Erro ao buscar statements' }, { status: 500 })
+  }
 }
