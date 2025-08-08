@@ -459,7 +459,7 @@ const data = {
       //isActive: true,
       items: [
         {
-          title: "DRE",
+          title: "Clientes",
           url: "/dre",
         },
         {
@@ -467,65 +467,16 @@ const data = {
           url: "/lancamentos",
         },
         {
-          title: "Categorias",
+          title: "Campanhas de marketing",
           url: "/categories",
         },
         {
-          title: "Processar Extrato",
+          title: "Suporte e atendimento",
           url: "/extratos",
         },
         {
-          title: "Fechamentos",
+          title: "Marketing",
           url: "/fechamentos",
-        },
-        {
-          title: "Planos de Pagamento",
-          url: "/planos",
-        },
-         {
-          title: "Contas a Pagar",
-          url: "/planos",
-        },
-         {
-          title: "Contas a Receber",
-          url: "/planos",
-        },
-         {
-          title: "Bancos",
-          url: "/bancos",
-        },
-         {
-          title: "Agências",
-          url: "/dashboard",
-        },
-          {
-          title: "Contas Bancárias",
-          url: "/contas-bancarias",
-        },
-          {
-          title: "Categorias Financeiras",
-          url: "/dashboard",
-        },
-          {
-          title: "Lançamentos / Movimentações",
-          url: "/dashboard",
-        },
-         {
-          title: "Estratos",
-          url: "/dashboard",
-        },
-         {
-          title: "Fluxo de Caixa",
-          url: "/dashboard",
-        },
-         {
-          title: "Fechame",
-          url: "/dashboard",
-        },
-        
-        {
-          title: "Dashboard",
-          url: "/dashboard",
         },
         {
           title: "Parâmetros",
@@ -559,15 +510,15 @@ const data = {
       items: [
         {
           title: "Usuários",
-          url: "#",
+          url: "/usuarios",
         },
         {
           title: "Clientes",
-          url: "#",
+          url: "/customers",
         },
         {
           title: "Fornecedores",
-          url: "#",
+          url: "suppliers",
         },
          {
           title: "Terceiros",
@@ -579,10 +530,6 @@ const data = {
         },
         {
           title: "Consulta",
-          url: "#",
-        },
-        {
-          title: "Cadastro",
           url: "#",
         },
         {
