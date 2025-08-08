@@ -94,6 +94,10 @@ const data = {
           title: "Bancos",
           url: "/banks",
         },
+        {
+          title: "Contas",
+          url: "/accounts",
+        },
          {
           title: "Agências",
           url: "/dashboard",
@@ -115,7 +119,7 @@ const data = {
           url: "/statements",
         },
          {
-          title: "Fluxo de Caixa",
+          title: "Fluxo de Caixa Diagrama",
           url: "/fluxo-caixa",
         },
         {
