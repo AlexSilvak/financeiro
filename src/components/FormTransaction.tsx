@@ -32,7 +32,16 @@ const formSchema = z.object({
   notes: z.string().optional(),
   recurring: z.boolean().optional().default(false),
   user_id: z.string().min(1, 'Obrigatório'),
+
+  // Novos campos
+  bank_id: z.string().min(1, 'Obrigatório'),
+  account_id: z.string().min(1, 'Obrigatório'),
+  trntype: z.string().min(1, 'Obrigatório'),
+  date: z.string().min(1, 'Obrigatório'),
+  memo: z.string().optional(),
+  fitid: z.string().min(1, 'Obrigatório'),
 })
+
 
 type FormValues = z.infer<typeof formSchema>
 
@@ -249,6 +258,90 @@ export function FormTransaction({ onSuccess }: FormTransactionProps) {
             </FormItem>
           )}
         />
+        <FormField
+  control={form.control}
+  name="bank_id"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>Bank ID</FormLabel>
+      <FormControl>
+        <Input placeholder="Ex: 12345" {...field} />
+      </FormControl>
+      <FormMessage />
+    </FormItem>
+  )}
+/>
+
+<FormField
+  control={form.control}
+  name="account_id"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>Account ID</FormLabel>
+      <FormControl>
+        <Input placeholder="Ex: 98765" {...field} />
+      </FormControl>
+      <FormMessage />
+    </FormItem>
+  )}
+/>
+
+<FormField
+  control={form.control}
+  name="trntype"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>Transaction Type</FormLabel>
+      <FormControl>
+        <Input placeholder="Ex: CREDIT, DEBIT" {...field} />
+      </FormControl>
+      <FormMessage />
+    </FormItem>
+  )}
+/>
+
+<FormField
+  control={form.control}
+  name="date"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>Data da Transação</FormLabel>
+      <FormControl>
+        <Input type="date" {...field} />
+      </FormControl>
+      <FormMessage />
+    </FormItem>
+  )}
+/>
+
+<FormField
+  control={form.control}
+  name="memo"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>Memo</FormLabel>
+      <FormControl>
+        <Input placeholder="Observação extra..." {...field} />
+      </FormControl>
+      <FormMessage />
+    </FormItem>
+  )}
+/>
+
+<FormField
+  control={form.control}
+  name="fitid"
+  render={({ field }) => (
+    <FormItem>
+      <FormLabel>FITID</FormLabel>
+      <FormControl>
+        <Input placeholder="Ex: unique-transaction-id" {...field} />
+      </FormControl>
+      <FormMessage />
+    </FormItem>
+  )}
+/>
+
         
         <Button type="submit" disabled={isMutating} className="w-full"  >
           {isMutating ? 'Salvando...' : 'Salvar'}

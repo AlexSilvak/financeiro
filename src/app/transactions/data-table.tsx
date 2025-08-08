@@ -68,11 +68,13 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
+import { getFilteredRowModel } from '@tanstack/react-table'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
 }
+
 
 
 function RowActions({ transactionId }: { transactionId: string }) {
@@ -113,10 +115,11 @@ function RowActions({ transactionId }: { transactionId: string }) {
         <DropdownMenuGroup>
           <DropdownMenuSeparator/>
           {/* Botão com Dialog para confirmação */}
-               <Dialog open={open} onOpenChange={setOpen}>
-          <AlertDialog>
-  <AlertDialogTrigger >
-  <div className='flex grid-cols-1 justify-baseline ml-2 align-baseline '> <Trash2 className="mr-2 h-4 w-4 " /> Delete</div>
+               <AlertDialog open={open} onOpenChange={setOpen}>
+  <AlertDialogTrigger asChild>
+    <Button variant="ghost" className="w-full max-w-xs justify-start">
+      <Trash2 className="mr-2 h-4 w-4" /> Delete
+    </Button>
   </AlertDialogTrigger>
   <AlertDialogContent>
     <AlertDialogHeader>
@@ -126,20 +129,17 @@ function RowActions({ transactionId }: { transactionId: string }) {
       </AlertDialogDescription>
     </AlertDialogHeader>
     <AlertDialogFooter>
-      <AlertDialogCancel >Cancelar</AlertDialogCancel>
-     <AlertDialogAction
-  onClick={() => {
-    handleSubmit(onDelete)(); // Chama a função de submit
-    handleClose()           // Fecha o dialog
-  }}
-  disabled={isMutating}
->
-  {isMutating ? 'Deletando...' : 'Confirmar'}
-</AlertDialogAction>
+      <AlertDialogCancel>Cancelar</AlertDialogCancel>
+      <AlertDialogAction
+        onClick={() => handleSubmit(onDelete)()}
+        disabled={isMutating}
+      >
+        {isMutating ? 'Deletando...' : 'Confirmar'}
+      </AlertDialogAction>
     </AlertDialogFooter>
   </AlertDialogContent>
 </AlertDialog>
-          </Dialog>
+
         </DropdownMenuGroup>
       </DropdownMenuContent>
     </DropdownMenu>
@@ -187,16 +187,18 @@ export function DataTable<TData, TValue>({
 }: DataTableProps<TData, TValue>) {
   const [filter, setFilter] = useState('')
 
-  const table = useReactTable({
-    data,
-    columns,
-    state: {
-      globalFilter: filter,
-    },
-    getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
-    onGlobalFilterChange: setFilter,
-  })
+const table = useReactTable({
+  data,
+  columns,
+  state: {
+    globalFilter: filter,
+  },
+  getCoreRowModel: getCoreRowModel(),
+  getPaginationRowModel: getPaginationRowModel(),
+  getFilteredRowModel: getFilteredRowModel(), // <- aqui entra
+  onGlobalFilterChange: setFilter,
+})
+
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFilter(e.target.value)
