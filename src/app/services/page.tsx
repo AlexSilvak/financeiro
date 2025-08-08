@@ -1,5 +1,5 @@
 'use client'
-
+import { useEffect } from 'react'
 import { columns } from './columns'
 import { DataTable } from './data-table'
 import useSWR from 'swr'
@@ -9,6 +9,21 @@ const fetcher = (url: string) => fetch(url).then((res) => res.json())
 
 export default function ServicesPage() {
   const { data: services = [], mutate } = useSWR('/api/services/list', fetcher)
+
+useEffect(() => {
+  const ws = new WebSocket('ws://localhost:3000')
+ ws.onmessage = (event) => {
+    try {
+      const updatedServices = JSON.parse(event.data)
+      mutate(updatedServices, { revalidate: false }) // atualiza cache e re-renderiza
+    } catch (err) {
+      console.error('Erro ao processar dados do WS', err)
+    }
+  }
+
+  return () => ws.close()
+}, [mutate])
+
 
   return (
     <div className="p-6 space-y-4">

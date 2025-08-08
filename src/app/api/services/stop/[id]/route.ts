@@ -1,18 +1,16 @@
+// src/app/api/services/stop/[id]/route.ts
 import { NextResponse } from 'next/server'
 import mongoose from 'mongoose'
 import { connectDB } from '@/lib/mongodb'
 import Service from '@/models/service'
 
-interface RouteParams {
-  params: {
-    id: string
-  }
+interface Params {
+  params: { id: string }
 }
 
-export async function POST(_req: Request, { params }: RouteParams) {
+export async function POST(req: Request, { params }: Params) {
   try {
     await connectDB()
-
     const { id } = params
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -24,14 +22,15 @@ export async function POST(_req: Request, { params }: RouteParams) {
       return NextResponse.json({ error: 'Serviço não encontrado' }, { status: 404 })
     }
 
-    // Atualiza status no MongoDB
-    service.status = 'running'
-    service.log_service = 'Serviço iniciado manualmente'
+    service.status = 'stopped'
+    service.log_service = 'Serviço interrompido manualmente'
     await service.save()
 
-    return NextResponse.json({ message: 'Serviço iniciado com sucesso' })
+    return NextResponse.json({ message: 'Serviço interrompido com sucesso' })
   } catch (error) {
-    console.error('Erro ao iniciar serviço:', error)
-    return NextResponse.json({ error: 'Erro ao iniciar serviço', details: `${error}` }, { status: 500 })
+    return NextResponse.json(
+      { error: 'Erro ao parar serviço', details: String(error) },
+      { status: 500 }
+    )
   }
 }

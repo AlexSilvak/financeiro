@@ -5,15 +5,10 @@ import Service from '@/models/service'
 import { Queue, Job } from 'bullmq'
 import { redis } from '@/lib/redis'
 
-const queue = new Queue('service-jobs', { connection: redis })
-
-export async function DELETE(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(req: Request) {
   try {
     await connectDB()
-    const { id } = params
+    const { id } = await req.json()
 
     if (!mongoose.Types.ObjectId.isValid(id)) {
       return NextResponse.json({ error: 'ID inválido' }, { status: 400 })
@@ -24,7 +19,8 @@ export async function DELETE(
       return NextResponse.json({ error: 'Serviço não encontrado' }, { status: 404 })
     }
 
-    // Remover job relacionado (se existir)
+    // Remove jobs relacionados da fila BullMQ
+    const queue = new Queue('service-jobs', { connection: redis })
     const jobs: Job[] = await queue.getJobs([
       'waiting',
       'active',
@@ -36,16 +32,14 @@ export async function DELETE(
     for (const job of jobs) {
       if (job.data?.serviceId === id) {
         await job.remove()
-        console.log(`Job removido da fila para o serviço ${id}`)
       }
     }
 
-    // Remover serviço do MongoDB
+    // Remove o serviço do MongoDB
     await service.deleteOne()
 
     return NextResponse.json({ message: 'Serviço removido com sucesso' })
   } catch (error) {
-    console.error('Erro ao remover serviço:', error)
     return NextResponse.json(
       { error: 'Erro ao remover serviço', details: `${error}` },
       { status: 500 }

@@ -111,18 +111,13 @@ const data = {
           url: "/dashboard",
         },
          {
-          title: "Estratos",
+          title: "Estratos Importados",
           url: "/statements",
         },
          {
           title: "Fluxo de Caixa",
           url: "/fluxo-caixa",
         },
-         {
-          title: "Fechame",
-          url: "/dashboard",
-        },
-        
         {
           title: "Dashboard",
           url: "/dashboard",
