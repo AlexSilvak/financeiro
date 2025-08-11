@@ -156,7 +156,7 @@ export function FormTransaction({ onSuccess }: FormTransactionProps) {
             name="category"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Categoria</FormLabel>
+                <FormLabel>Categoria Natureza Financeira</FormLabel>
                 <FormControl>
                   <Input placeholder="Ex: Alimentação" {...field} />
                 </FormControl>
@@ -165,6 +165,7 @@ export function FormTransaction({ onSuccess }: FormTransactionProps) {
             )}
           />
         </div>
+        
 
         <div className="grid grid-cols-2 gap-4">
           <FormField

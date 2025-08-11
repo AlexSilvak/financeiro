@@ -123,7 +123,7 @@ const data = {
           url: "/fluxo-caixa",
         },
         {
-          title: "Dashboard",
+          title: "Naturezas Financeiras",
           url: "/dashboard",
         },
         {
