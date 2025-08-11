@@ -29,7 +29,7 @@ export default function CreateJobDialog({ onSuccess }: { onSuccess: () => void }
         return
       }
 
-      const res = await fetch('/api/services/statementProcessor/create', {
+      const res = await fetch('/api/services/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
