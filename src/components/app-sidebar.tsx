@@ -151,8 +151,12 @@ const data = {
           url: "/categories",
         },
         {
-          title: "Processar Extrato",
+          title: "Importar Extrato",
           url: "/extratos",
+        },
+         {
+          title: "Importar Extrato",
+          url: "/processar-extratos",
         },
         {
           title: "Fechamentos",

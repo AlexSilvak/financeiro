@@ -10,7 +10,7 @@ export async function POST(req: NextRequest) {
 
   try {
     const body = await req.json()
-
+    
     // Garantir que apenas campos válidos sejam inseridos
     const sanitizeTransaction = (tx: any) => ({
       description: tx.description,
