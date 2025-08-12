@@ -79,7 +79,11 @@ interface DataTableProps<TData, TValue> {
 
 function RowActions({ transactionId }: { transactionId: string }) {
   const [open, setOpen] = useState(false)
-  
+  const [descriptionFilter, setDescriptionFilter] = useState('')
+const [valueFilter, setValueFilter] = useState('')
+const [typeFilter, setTypeFilter] = useState('')
+const [dateFilter, setDateFilter] = useState('')
+
 
 
   const { handleSubmit } = useForm()
@@ -219,7 +223,13 @@ const table = useReactTable({
           onChange={handleSearchChange}
           className="w-64"
         />
-    
+        
+      <Input
+          placeholder="Buscar..."
+          value={filter}
+          onChange={handleSearchChange}
+          className="w-64"
+        />
         <div className='flex grid-cols-1 gap-2'>
           
           <NewFormTransaction />
