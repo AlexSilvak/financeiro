@@ -69,6 +69,13 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog"
 import { getFilteredRowModel } from '@tanstack/react-table'
+import { useId } from 'react'
+
+import { CircleIcon } from 'lucide-react'
+
+import { Label } from '@/components/ui/label'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import DatePickerRangeAndTimePickerDemo from '@/components/DatePickerRangeAndTimePickerDemo'
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -150,6 +157,7 @@ const [dateFilter, setDateFilter] = useState('')
   )
 }
 
+
 //formulario do menu 
 function NewFormTransaction() {
   const [open, setOpen] = useState(false)
@@ -210,26 +218,55 @@ const table = useReactTable({
     setFilter(e.target.value)
   }
 
+
+
   const handlePreviousPage = () => table.previousPage()
   const handleNextPage = () => table.nextPage()
-
+ const id = useId()
   return (
-    <div className="space-y-4">
+    
+    <div className="space-y-3">
       {/* Filtro + paginação simples */}
       <div className="flex items-center justify-between">
-        <Input
+        <div  className='w-full max-w-xs space-y-2 flex grid-cols-1 '>
+          <Input
           placeholder="Buscar..."
           value={filter}
           onChange={handleSearchChange}
           className="w-64"
         />
-        
-      <Input
-          placeholder="Buscar..."
-          value={filter}
-          onChange={handleSearchChange}
-          className="w-64"
-        />
+        </div>
+         <div className='w-full max-w-xs space-y-2 flex grid-cols-1 gap-2'>
+           <DatePickerRangeAndTimePickerDemo/>
+         </div>
+       
+  
+       <div className='w-full max-w-xs space-y-1 flex grid-cols-1 gap-2'>
+      <Label htmlFor={id}>Tipo</Label>
+      <Select defaultValue='1'>
+        <SelectTrigger
+          id={id}
+          className='w-full [&>span]:flex [&>span]:items-center [&>span]:gap-2 [&>span_svg]:shrink-0'
+        >
+          <SelectValue placeholder='Select status' />
+        </SelectTrigger>
+        <SelectContent className='[&_*[role=option]>span>svg]:text-muted-foreground/80 [&_*[role=option]]:ps-2 [&_*[role=option]]:pe-8 [&_*[role=option]>span]:start-auto [&_*[role=option]>span]:end-2 [&_*[role=option]>span]:flex [&_*[role=option]>span]:items-center [&_*[role=option]>span]:gap-2 [&_*[role=option]>span>svg]:shrink-0'>
+
+          <SelectItem value='3'>
+            <span className='flex items-center gap-2'>
+              <CircleIcon className='size-2 fill-emerald-600 text-emerald-600' />
+              <span className='truncate'>Crédito</span>
+            </span>
+          </SelectItem>
+          <SelectItem value='5'>
+            <span className='flex items-center gap-2'>
+              <CircleIcon className='size-2 fill-red-500 text-red-500' />
+              <span className='truncate'>Débito</span>
+            </span>
+          </SelectItem>
+        </SelectContent>
+      </Select>
+    </div>
         <div className='flex grid-cols-1 gap-2'>
           
           <NewFormTransaction />
