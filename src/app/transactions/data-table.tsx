@@ -200,22 +200,40 @@ export function DataTable<TData, TValue>({
   data,
 }: DataTableProps<TData, TValue>) {
   const [filter, setFilter] = useState('')
+  const [filterType, setFilterType] = useState('')
 
 const table = useReactTable({
-  data,
-  columns,
-  state: {
-    globalFilter: filter,
-  },
-  getCoreRowModel: getCoreRowModel(),
-  getPaginationRowModel: getPaginationRowModel(),
-  getFilteredRowModel: getFilteredRowModel(), // <- aqui entra
-  onGlobalFilterChange: setFilter,
-})
+    data,
+    columns,
+    state: {
+      globalFilter: filter, // Apenas o valor da busca
+    },
+    onGlobalFilterChange: setFilter, // Passa a função, não executa
+    getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    globalFilterFn: (row, columnId, value) => {
+      // Lógica customizada com filterType
+      const cellValue = row.getValue<string>(columnId)
 
+      if (!value) return true
+
+      if (filterType === 'startsWith') {
+        return cellValue?.toString().toLowerCase().startsWith(value.toLowerCase())
+      } else if (filterType === 'endsWith') {
+        return cellValue?.toString().toLowerCase().endsWith(value.toLowerCase())
+      } else {
+        // padrão: contém
+        return cellValue?.toString().toLowerCase().includes(value.toLowerCase())
+      }
+    },
+  })
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFilter(e.target.value)
+  }
+const handleFilterType= (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFilterType(e.target.value)
   }
 
 
@@ -243,16 +261,17 @@ const table = useReactTable({
   
        <div className='w-full max-w-xs space-y-1 flex grid-cols-1 gap-2'>
       <Label htmlFor={id}>Tipo</Label>
-      <Select defaultValue='1'>
+      <Select value={filterType} onValueChange={setFilterType}>
         <SelectTrigger
           id={id}
+          
           className='w-full [&>span]:flex [&>span]:items-center [&>span]:gap-2 [&>span_svg]:shrink-0'
         >
           <SelectValue placeholder='Select status' />
         </SelectTrigger>
         <SelectContent className='[&_*[role=option]>span>svg]:text-muted-foreground/80 [&_*[role=option]]:ps-2 [&_*[role=option]]:pe-8 [&_*[role=option]>span]:start-auto [&_*[role=option]>span]:end-2 [&_*[role=option]>span]:flex [&_*[role=option]>span]:items-center [&_*[role=option]>span]:gap-2 [&_*[role=option]>span>svg]:shrink-0'>
 
-          <SelectItem value='3'>
+          <SelectItem value='3' onChange={handleFilterType}>
             <span className='flex items-center gap-2'>
               <CircleIcon className='size-2 fill-emerald-600 text-emerald-600' />
               <span className='truncate'>Crédito</span>
