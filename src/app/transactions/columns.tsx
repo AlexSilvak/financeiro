@@ -35,10 +35,10 @@ export const columns: ColumnDef<Payment>[] = [
         currency: 'BRL',
       })
 
-      const isCredit = type === 'CREDIT'
+      const isCredit = type === 'DEBIT'
 
       return (
-        <div className={cn('flex items-center gap-1', isCredit ? 'text-green-600' : 'text-red-600')}>
+        <div className={cn('flex items-center gap-1', isCredit ?  'text-red-600' :'text-green-600')}>
           {isCredit ? <ArrowDown size={14} /> : <ArrowUp size={14} />}
           {formatted}
         </div>
