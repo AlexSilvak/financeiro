@@ -1,93 +1,94 @@
-// src/app/api/transactions/route.ts
 import { NextRequest, NextResponse } from 'next/server'
-import mongoose from 'mongoose'
-import Transaction from '@/models/transactions'
 import { connectDB } from '@/lib/mongodb'
+import { Transactions } from '@/models/transactions'
 
-// POST /api/transactions
+function extractValue(text: string, tag: string): string {
+  const regex = new RegExp(`<${tag}>([^<\r\n]+)`)
+  const match = text.match(regex)
+  return match ? match[1].trim() : ''
+}
+
+function parseOfxDate(dateStr: string): Date {
+  const clean = dateStr.trim().slice(0, 8)
+  const year = clean.slice(0, 4)
+  const month = clean.slice(4, 6)
+  const day = clean.slice(6, 8)
+  return new Date(`${year}-${month}-${day}T00:00:00`)
+}
+
+function extractTransactions(text: string) {
+  const trxRegex = /<STMTTRN>[\s\S]*?<\/STMTTRN>/g
+  const trxBlocks = text.match(trxRegex) || []
+
+  return trxBlocks.map((block) => ({
+    trntype: extractValue(block, 'TRNTYPE'),
+    amount: parseFloat(extractValue(block, 'TRNAMT')),
+    payment_method: extractValue(block, 'NAME'),
+    date: parseOfxDate(extractValue(block, 'DTPOSTED')),
+    memo: extractValue(block, 'MEMO'),
+    fitid: extractValue(block, 'FITID'),
+  }))
+}
+
 export async function POST(req: NextRequest) {
-  await connectDB()
-
   try {
-    const body = await req.json()
-    
-    // Garantir que apenas campos válidos sejam inseridos
-    const sanitizeTransaction = (tx: any) => ({
-      description: tx.description,
-      payment_method: tx.payment_method,
-      amount: tx.amount,
-      type: tx.type,
-      category: tx.category,
-      due_date: tx.due_date || null,
-      payment_date: tx.payment_date || null,
-      status: tx.status || 'pendente',
-      notes: tx.notes || '',
-      recurring: tx.recurring || false,
-      created_at: tx.created_at || new Date(),
-      user_id: tx.user_id,
-      bank_id: tx.bank_id || null,
-      account_id: tx.account_id || null,
-      trntype: tx.trntype || null,
-      date: tx.date || null,
-      memo: tx.memo || '',
-      fitid: tx.fitid || null,
-    })
+    await connectDB()
 
-    if (Array.isArray(body.transactions)) {
-      const sanitized = body.transactions.map(sanitizeTransaction)
-      const created = await Transaction.insertMany(sanitized)
-      return NextResponse.json({
-        message: 'Transações criadas com sucesso',
-        count: created.length,
-      }, { status: 201 })
+    const formData = await req.formData()
+    const file = formData.get('file') as File
+
+    if (!file || !file.name.endsWith('.ofx')) {
+      return NextResponse.json({ error: 'Envie um arquivo .ofx' }, { status: 400 })
     }
 
-    const created = await Transaction.create(sanitizeTransaction(body))
+    const arrayBuffer = await file.arrayBuffer()
+    const text = Buffer.from(arrayBuffer).toString('utf8')
+
+    const accountId = extractValue(text, 'ACCTID')
+    const bankId = extractValue(text, 'BANKID')
+    const branchId = extractValue(text, 'BRANCHID')
+    const payment_method = extractValue(text, 'NAME')
+    const transactions = extractTransactions(text)
+
+    const newTransaction = await Transactions.create({
+      account_id: accountId,
+      bank_id: bankId,
+      branch_id: branchId,
+      payment_method,
+      transactions,
+      imported_at: new Date(),
+    })
+
     return NextResponse.json({
-      message: 'Transação criada com sucesso',
-      data: created,
-    }, { status: 201 })
-  } catch (error: any) {
-    console.error('Erro ao criar transações:', error)
-    return NextResponse.json({
-      error: error.message || 'Erro ao criar transações',
-    }, { status: 500 })
+      message: 'Extrato importado com sucesso',
+      count: transactions.length,
+      id: newTransaction._id,
+    })
+  } catch (err: any) {
+    console.error('Erro ao processar arquivo OFX:', err)
+    return NextResponse.json({ error: 'Erro interno no servidor' }, { status: 500 })
   }
 }
 
-// GET /api/transactions
 export async function GET(req: NextRequest) {
   try {
     await connectDB()
 
     const { searchParams } = new URL(req.url)
-    const user_id = searchParams.get('user_id')
     const bank_id = searchParams.get('bank_id')
     const account_id = searchParams.get('account_id')
-    const trntype = searchParams.get('trntype')
-    const fitid = searchParams.get('fitid')
 
-    const filter: any = {}
-
-    if (user_id) {
-      if (!mongoose.Types.ObjectId.isValid(user_id)) {
-        return NextResponse.json({ error: 'Invalid user ID' }, { status: 400 })
-      }
-      filter.user_id = user_id
-    }
+    const filter: Record<string, any> = {}
     if (bank_id) filter.bank_id = bank_id
     if (account_id) filter.account_id = account_id
-    if (trntype) filter.trntype = trntype
-    if (fitid) filter.fitid = fitid
 
-    const transactions = await Transaction.find(filter).sort({ due_date: -1 })
+    const transaction = await Transactions.find(filter)
+      .sort({ imported_at: -1 })
+      .limit(50)
 
-    return NextResponse.json({ transactions })
+    return NextResponse.json(transaction)
   } catch (error) {
-    console.error('Error fetching transactions:', error)
-    return NextResponse.json(
-      { error: 'Error fetching transactions' },
-      { status: 500 }
-    )
+    console.error('Erro no GET /transactions:', error)
+    return NextResponse.json({ error: 'Erro ao buscar transações' }, { status: 500 })
   }
 }

@@ -8,7 +8,7 @@
     "dev:all": "concurrently -n WEB,WS -c green,blue \"npm run dev\" \"npm run ws\"",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": ""
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

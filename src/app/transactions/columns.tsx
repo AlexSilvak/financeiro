@@ -4,47 +4,23 @@ import { ColumnDef } from '@tanstack/react-table'
 import { Badge } from '@/components/ui/badge'
 import { ArrowDown, ArrowUp } from 'lucide-react'
 import { cn } from '@/lib/utils'
-import { IconCircleCheckFilled, IconLoader } from "@tabler/icons-react"
+import { format } from 'date-fns'
 
-// Definição do tipo com os novos campos
+// Definição do tipo
 export type Payment = {
-  id: string
+  trntype: string
   amount: number
-  status: string
-  description: string
-  payment_method: string
-  type: 'income' | 'expense'
-  recurring: boolean
-  category: string
-  notes: string
-  bank_id?: string
-  account_id?: string
-  trntype?: string
-  date?: string
+  payment_method?: string
+  date: Date
   memo?: string
-  fitid?: string
+  fitid: string
+  user_id?: string
 }
 
 // Colunas da tabela
 export const columns: ColumnDef<Payment>[] = [
   {
-    accessorKey: 'status',
-    header: 'Status',
-    cell: ({ row }) => {
-      return (
-        <Badge variant="outline" className="text-muted-foreground px-1.5">
-          {row.original.status === "pago" || row.original.status === "concluido" ? (
-            <IconCircleCheckFilled className="fill-green-500 dark:fill-green-400" />
-          ) : (
-            <IconLoader />
-          )}
-          {row.original.status}
-        </Badge>
-      )
-    },
-  },
-  {
-    accessorKey: 'description',
+    accessorKey: 'memo',
     header: 'Descrição',
     meta: { editable: true },
   },
@@ -53,56 +29,64 @@ export const columns: ColumnDef<Payment>[] = [
     header: 'Valor',
     cell: ({ row }) => {
       const amount = Number(row.getValue('amount'))
-      const type = row.original.type
+      const type = row.original.trntype
       const formatted = amount.toLocaleString('pt-BR', {
         style: 'currency',
         currency: 'BRL',
       })
+
+      const isCredit = type === 'CREDIT'
+
       return (
-        <div className={cn('flex items-center gap-1', type === 'expense' ? 'text-red-600' : 'text-green-600')}>
-          {type === 'income' ? <ArrowDown size={14} /> : <ArrowUp size={14} />}
+        <div className={cn('flex items-center gap-1', isCredit ? 'text-green-600' : 'text-red-600')}>
+          {isCredit ? <ArrowDown size={14} /> : <ArrowUp size={14} />}
           {formatted}
         </div>
       )
     },
   },
   {
-    accessorKey: 'type',
+    accessorKey: 'trntype',
     header: 'Tipo',
     cell: ({ row }) => {
-      const type = row.getValue<'type'>('type')
-      return type === 'expense' ? 'Despesa' : 'Receita'
+      const type = row.getValue('trntype') as string
+      return (
+        <Badge variant={type === 'CREDIT' ? 'outline' : 'default'}>
+          {type === 'CREDIT' ? 'Crédito' : 'Débito'}
+        </Badge>
+      )
     },
   },
   {
-    accessorKey: 'category',
-    header: 'Categoria',
-  },
-  {
-    accessorKey: 'bank_id',
-    header: 'Banco',
-  },
-  {
-    accessorKey: 'account_id',
-    header: 'Conta',
-  },
-  {
-    accessorKey: 'trntype',
-    header: 'Transação',
+    accessorKey: 'payment_method',
+    header: 'Método de Pagamento',
+    cell: ({ row }) => {
+      const method = row.getValue('payment_method') as string
+      return method ? <Badge variant="secondary">{method}</Badge> : <span className="text-muted-foreground">—</span>
+    },
   },
   {
     accessorKey: 'date',
     header: 'Data',
-    cell: ({ row }) => row.original.date
-      ? new Date(row.original.date).toLocaleDateString('pt-BR')
-      : '-'
-  },
-  {
-    accessorKey: 'memo',
-    header: 'Observação',
+    cell: ({ row }) => {
+      const date = new Date(row.getValue('date') as string | Date)
+      return format(date, 'dd/MM/yyyy')
+    },
   },
   {
     accessorKey: 'fitid',
-    header: 'FITID',
-  }
+    header: 'ID da Transação',
+    cell: ({ row }) => {
+      const id = row.getValue('fitid') as string
+      return <code className="text-xs text-muted-foreground">{id}</code>
+    },
+  },
+  {
+    accessorKey: 'user_id',
+    header: 'Usuário',
+    cell: ({ row }) => {
+      const userId = row.getValue('user_id') as string
+      return userId ? <span>{userId}</span> : <span className="text-muted-foreground">—</span>
+    },
+  },
 ]

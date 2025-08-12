@@ -30,7 +30,7 @@ export default function ExtratoUploader() {
     setStatus(null)
 
    try {
-  const response = await fetch('/api/statements', {
+  const response = await fetch('/api/transactions', {
     method: 'POST',
     body: formData,
   })

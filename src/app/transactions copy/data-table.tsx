@@ -153,9 +153,7 @@ function NewFormTransaction() {
   const handleSuccess = () => {
     setOpen(false) // Fecha o dialog
     mutate('/api/transactions') // Dá refresh nos dados
-
     location.reload()
-  
     toast.success('Transação salva com sucesso!')
       
   }

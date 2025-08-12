@@ -8,10 +8,8 @@ import Loading from "@/components/Loading";
  
 export default function Page() {
 
-
-
   const { transactions, isLoading, isError ,mutate} = useTransactions()
-   
+
   return (
    
    

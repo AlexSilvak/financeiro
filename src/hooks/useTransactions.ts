@@ -1,5 +1,4 @@
-import useSWR from 'swr' // ✅ CERTA
-
+import useSWR from 'swr'
 
 type TransactionParams = {
   user_id?: string
@@ -7,28 +6,21 @@ type TransactionParams = {
   to?: string
 }
 
-
-type Payment={
-
-  id: string
-  description: string
-  payment_method: string
+type Payment = {
+  trntype: string
   amount: number
-  type: 'expense' | 'income'
-  category: string
-  due_date: string
-  payment_date?: string
-  status: 'pendente' | 'pago' | 'concluido'
-  notes?: string
-  recurring?: boolean
-  created_at: string
-  user_id: string
+  payment_method?: string
+  date: string // ou Date, se fizer conversão
+  memo?: string
+  fitid: string
+  user_id?: string
+  _id?: string
 }
 
 type UseTransactionsReturn = {
   transactions: Payment[]
   isLoading: boolean
-  isError: string
+  isError: any
 }
 
 const fetcher = (url: string) => fetch(url).then(res => res.json())
@@ -36,9 +28,16 @@ const fetcher = (url: string) => fetch(url).then(res => res.json())
 export function useTransactions(params?: TransactionParams): UseTransactionsReturn {
   const query = new URLSearchParams(params as Record<string, string>).toString()
   const { data, error, isLoading } = useSWR(`/api/transactions?${query}`, fetcher)
-  console.log(data)
+
+  const transactions = Array.isArray(data) && data.length > 0
+    ? data[0].transactions.map((t: Payment) => ({
+        ...t,
+        date: new Date(t.date), // se quiser como Date
+      }))
+    : []
+
   return {
-    transactions: data?.transactions || [],
+    transactions,
     isLoading,
     isError: error,
   }
