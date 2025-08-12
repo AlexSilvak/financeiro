@@ -58,14 +58,6 @@ export const columns: ColumnDef<Payment>[] = [
     },
   },
   {
-    accessorKey: 'payment_method',
-    header: 'Método de Pagamento',
-    cell: ({ row }) => {
-      const method = row.getValue('payment_method') as string
-      return method ? <Badge variant="secondary">{method}</Badge> : <span className="text-muted-foreground">—</span>
-    },
-  },
-  {
     accessorKey: 'date',
     header: 'Data',
     cell: ({ row }) => {
