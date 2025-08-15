@@ -19,9 +19,9 @@ interface ITransaction {
   description: string;
   payment_method: string;
   amount: number;
-  type: "income" | "expense";
+  trntype: "DEBIT" | "CREDIT";
   category: string;
-  due_date: string; // string para compatibilidade com fetch
+  date: string; // string para compatibilidade com fetch
 }
 
 const meses = [
@@ -34,6 +34,9 @@ async function getTransactions(): Promise<ITransaction[]> {
     cache: "no-store",
   });
   const json = await res.json();
+  const receitas = json
+    
+  console.log(receitas)
   return json.transactions || [];
 }
 
@@ -49,9 +52,9 @@ function agruparPorMesCategoria(transactions: ITransaction[]) {
   const resultado: Record<string, Record<string, number>> = {};
 
   for (const l of transactions) {
-    const data = new Date(l.due_date);
+    const data = new Date(l.date);
     const mes = meses[data.getMonth()];
-    const chave = `${l.type.toUpperCase()} - ${l.category}`;
+    const chave = `${l.trntype.toUpperCase()} - ${l.category}`;
 
     resultado[chave] = resultado[chave] || {};
     resultado[chave][mes] = (resultado[chave][mes] || 0) + l.amount;
@@ -62,13 +65,13 @@ function agruparPorMesCategoria(transactions: ITransaction[]) {
 
 export default async function TransactionsLancamentosDRE() {
   const transactions = await getTransactions();
-
+  
   const receitas = transactions
-    .filter((l) => l.type === "income")
+    .filter((l) => l.trntype === "DEBIT")
     .reduce((total, l) => total + l.amount, 0);
 
   const despesas = transactions
-    .filter((l) => l.type === "expense")
+    .filter((l) => l.trntype === "CREDIT")
     .reduce((total, l) => total + l.amount, 0);
 
   const saldo = receitas - despesas;

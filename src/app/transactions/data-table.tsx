@@ -1,5 +1,12 @@
 'use client'
+import { useId } from 'react'
 
+import { ChevronFirstIcon, ChevronLastIcon, ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
+
+import { Label } from '@/components/ui/label'
+
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import {
   ColumnDef,
   flexRender,
@@ -20,9 +27,11 @@ import {
 import {
   Pagination,
   PaginationContent,
+  PaginationLink,
   PaginationItem,
   PaginationNext,
   PaginationPrevious,
+  PaginationEllipsis 
 } from '@/components/ui/pagination'
 
 import { Button } from '@/components/ui/button'
@@ -66,22 +75,24 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
+  AlertDialogTrigger, 
 } from "@/components/ui/alert-dialog"
 import { getFilteredRowModel } from '@tanstack/react-table'
-import { useId } from 'react'
+
 
 import { CircleIcon } from 'lucide-react'
 
-import { Label } from '@/components/ui/label'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+
+
 import DatePickerRangeAndTimePickerDemo from '@/components/DatePickerRangeAndTimePickerDemo'
+
+
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
 }
-
+const pages = [1, 2, 3]
 
 
 function RowActions({ transactionId }: { transactionId: string }) {
@@ -241,6 +252,9 @@ const handleFilterType= (e: React.ChangeEvent<HTMLInputElement>) => {
   const handlePreviousPage = () => table.previousPage()
   const handleNextPage = () => table.nextPage()
  const id = useId()
+ const currentPage = table.getState().pagination.pageIndex + 1;
+ const totalPages = table.getPageCount();
+ 
   return (
     
     <div className="space-y-3">
@@ -351,24 +365,57 @@ const handleFilterType= (e: React.ChangeEvent<HTMLInputElement>) => {
       </div>
 
       {/* Paginação */}
-      <div className="flex justify-end">
-        <Pagination>
-          <PaginationContent>
-            <PaginationItem>
-              <PaginationPrevious
-                onClick={handlePreviousPage}
-                disabled={!table.getCanPreviousPage()}
-              />
-            </PaginationItem>
-            <PaginationItem>
-              <PaginationNext
-                onClick={handleNextPage}
-                disabled={!table.getCanNextPage()}
-              />
-            </PaginationItem>
-          </PaginationContent>
+      <div className="flex justify-center">
+      
+      <div className="flex justify-end items-center gap-6">
+  {/* Info de páginas */}
+  <span className="text-foreground">{currentPage}</span> de{" "}
+  <p className="text-sm text-muted-foreground ">
+     
+    <span className="text-foreground">{totalPages}</span>
+  </p>
+
+  {/* Botões de navegação */}
+  <Pagination>
+    <PaginationContent>
+      <PaginationItem>
+        <Pagination
+          size="icon"
+          className="rounded-full"
+          onClick={handlePreviousPage}
+          disabled={!table.getCanPreviousPage()}
+        >
+          <ChevronLeftIcon className="h-4 w-4" />
         </Pagination>
-      </div>
-    </div>
+      </PaginationItem>
+
+      {/* Páginas numéricas */}
+      {Array.from({ length: totalPages }).map((_, index) => (
+        <PaginationItem key={index}>
+          <PaginationLink
+            onClick={() => table.nextPage()}
+            isActive={currentPage === index + 1}
+            className="rounded-full"
+          >
+            {index + 1}
+          </PaginationLink>
+        </PaginationItem>
+      ))}
+
+      <PaginationItem>
+        <Pagination
+          size="icon"
+          className="rounded-full"
+          onClick={handleNextPage}
+          disabled={!table.getCanNextPage()}
+        >
+          <ChevronRightIcon className="h-4 w-4" />
+        </Pagination>
+      </PaginationItem>
+    </PaginationContent>
+  </Pagination>
+</div>
+</div>
+</div>
   )
 }
