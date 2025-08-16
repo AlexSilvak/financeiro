@@ -4,7 +4,7 @@ import { useId } from 'react'
 import { ChevronFirstIcon, ChevronLastIcon, ChevronLeftIcon, ChevronRightIcon } from 'lucide-react'
 
 import { Label } from '@/components/ui/label'
-
+import { ArchiveIcon, PencilIcon, Trash2Icon } from 'lucide-react'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip'
 import {
