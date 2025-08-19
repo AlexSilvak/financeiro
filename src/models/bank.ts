@@ -1,47 +1,23 @@
-// models/Bank.ts
-import  { Schema, Document, model, models } from 'mongoose'
+import { Schema, Document, model, models } from 'mongoose'
 
 export interface IBank extends Document {
-  name: string
-  bank_id: string
-  agency: {
-    number: string
-    name?: string
-    address?: string
-    contact?: string
-  }
-  account_number: string
-  manager: string
-  sac: string
-  fone: string
-  email: string
-  status: string
+  ispb: string          // Identificador BACEN (8 dígitos)
+  code: number          // Código COMPE (3 dígitos) 
+  name: string          // Nome curto (ex: Banco do Brasil)
+  fullName: string      // Nome completo (ex: Banco do Brasil S.A.)
+  status: string        // ativo / inativo
 }
 
 const BankSchema = new Schema<IBank>(
   {
-    name: { type: String, required: true },
-    bank_id: { type: String, required: true },
-
-    agency: {
-      number: { type: String},
-      name: { type: String },
-      address: { type: String },
-      contact: { type: String },
-    },
-
-    account_number: { type: String },
-    manager: { type: String},
-    sac: { type: String},
-    fone: { type: String},
-    email: { type: String },
-
-    status: { type: String, required: true }, // exemplo: "ativo", "inativo"
+    ispb: { type: String, required: true },           // sempre string porque começa com zeros
+    code: { type: Number, required: true },           // COMPE (ex: 001, 237, 341)
+    name: { type: String, required: true },           // ex: Itaú
+    fullName: { type: String, required: true },       // ex: Itaú Unibanco S.A.
+    status: { type: String, required: true },         // ativo / inativo
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 )
 
-const Bank= models.Bank|| model<IBank>('Bank', BankSchema)
+const Bank = models.Bank || model<IBank>('Bank', BankSchema)
 export default Bank

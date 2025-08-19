@@ -6,44 +6,19 @@ export type Banks = {
   id: string
   name: string
   bank_id: string
-  agency: {
-    number: string
-    name?: string
-    address?: string
-    contact?: string
-  }
-  address: string
   status: string
   number: string
+  fullName:string
 }
 
 export const columns: ColumnDef< Banks>[] = [
   {
-    accessorKey: "name",
+    accessorKey: "fullName",
     header: "Nome"
   },
   {
-    accessorKey: "bank_id",
+    accessorKey: "code",
     header: "Banco"
   },
-  {
-    header: "Agência",
-    accessorKey: "agency.number",
-    cell: ({ row }) => row.original.agency?.number || "-"
-  },
-  {
-    header: "Endereço",
-    accessorKey: "agency.address",
-    cell: ({ row }) => row.original.agency?.address || "-"
-  },
- 
-  {
-    accessorKey: "contact",
-    header: "Contato",
-    cell: ({ row }) => row.original.agency?.contact || "-"
-  },
-   {
-    accessorKey: "status",
-    header: "Status"
-  },
+  
 ]

@@ -19,31 +19,37 @@ import { useEffect, useState } from 'react'
 import axios from 'axios'
 import Loading from '@/components/Loading'
 import { toast } from 'sonner'
+import { useId } from 'react'
 
+import { Switch } from '@/components/ui/switch'
 export default function Page() {
   const [loading, setLoading] = useState(false)
   const [data, setData] = useState<Banks[]>([])
-
+  const [open, setOpen] = useState(false)
+  const [checked, setChecked] = useState(false)
+  const toggleSwitch = (value: boolean) => {
+    setChecked(value)
+    handleChange("status", value ? "ativo" : "inativo")
+  }
   const [form, setForm] = useState({
+    ispb: '',
     name: '',
     bank_id: '',
-    agency: {
-      number: '',
-      address: '',
-      contact: '',
-    },
-    address: '',
-    contact: '',
+    code:'',
+    fullName:'',
     status: 'ativo',
   })
+   const id = useId()
+  
 
-  const [open, setOpen] = useState(false)
+  //const toggleSwitch = () => setChecked(prev => !prev)
 
   const fetchData = async () => {
     try {
       setLoading(true)
-      const res = await axios.get('/api/banks')
+      const res = await axios.get('https://brasilapi.com.br/api/banks/v1')
       setData(res.data)
+      console.log(res.data)
     } catch (error) {
       console.error('Erro ao buscar banks', error)
     } finally {
@@ -58,18 +64,6 @@ export default function Page() {
     }))
   }
 
-  const handleAgencyChange = (
-    field: keyof typeof form.agency,
-    value: string
-  ) => {
-    setForm((prev) => ({
-      ...prev,
-      agency: {
-        ...prev.agency,
-        [field]: value,
-      },
-    }))
-  }
 
   useEffect(() => {
     fetchData()
@@ -84,16 +78,12 @@ export default function Page() {
       setOpen(false)
       // reset
       setForm({
-        name: '',
-        bank_id: '',
-        agency: {
-          number: '',
-          address: '',
-          contact: '',
-        },
-        address: '',
-        contact: '',
-        status: 'ativo',
+    ispb:'',
+    name: '',
+    bank_id: '',
+    code:'',
+    fullName:'',
+    status: 'ativo',
       })
     } catch (err) {
       toast.error('Erro ao salvar banco.')
@@ -115,8 +105,20 @@ export default function Page() {
                 Preencha os dados abaixo para criar um novo banco.
               </DialogDescription>
             </DialogHeader>
-
+             
+             
             <div className="grid gap-4 py-4">
+               <div className="grid gap-2">
+                <Label htmlFor="name">ISPB</Label>
+                <Input
+                  id="name"
+                  value={form.ispb}
+                  onChange={(e) => handleChange('ispb', e.target.value)}
+                />
+              </div>
+
+
+
               <div className="grid gap-2">
                 <Label htmlFor="name">Nome</Label>
                 <Input
@@ -127,62 +129,54 @@ export default function Page() {
               </div>
 
               <div className="grid gap-2">
-                <Label htmlFor="bank_id">Código do Banco</Label>
+                <Label htmlFor="code">Código do Banco</Label>
                 <Input
-                  id="bank_id"
-                  value={form.bank_id}
-                  onChange={(e) => handleChange('bank_id', e.target.value)}
+                  id="code"
+                  value={form.code}
+                  onChange={(e) => handleChange('code', e.target.value)}
                 />
+              </div>
+               <div className="grid gap-2">
+                <Label htmlFor="fullName">Nome Completo</Label>
+                <Input
+                  id="fullName"
+                  value={form.fullName}
+                  onChange={(e) => handleChange('fullName', e.target.value)}
+                />
+              </div>
+                 <div className="grid gap-2">
+      <Label htmlFor={id}>Status</Label>
+      <div className="flex items-center gap-2">
+        <span
+          className={`cursor-pointer text-sm font-medium ${
+            checked ? "text-muted-foreground/70" : ""
+          }`}
+          onClick={() => toggleSwitch(true)}
+        >
+          Ativo
+        </span>
+
+        <Switch
+          id={id}
+          checked={checked}
+          onCheckedChange={toggleSwitch}
+          aria-labelledby={`${id}-yes ${id}-no`}
+        />
+
+        <span
+          className={`cursor-pointer text-sm font-medium ${
+            !checked ? "text-muted-foreground/70" : ""
+          }`}
+          onClick={() => toggleSwitch(false)}
+        >
+          Inativo
+        </span>
+      </div>
+
+              
               </div>
 
-              <div className="grid gap-2">
-                <Label htmlFor="agency_number">Número da Agência</Label>
-                <Input
-                  id="agency_number"
-                  value={form.agency.number}
-                  onChange={(e) => handleAgencyChange('number', e.target.value)}
-                />
-              </div>
-
-              <div className="grid gap-2">
-                <Label htmlFor="agency_address">Endereço da Agência</Label>
-                <Input
-                  id="agency_address"
-                  value={form.agency.address}
-                  onChange={(e) =>
-                    handleAgencyChange('address', e.target.value)
-                  }
-                />
-              </div>
-
-              <div className="grid gap-2">
-                <Label htmlFor="agency_contact">Contato da Agência</Label>
-                <Input
-                  id="agency_contact"
-                  value={form.agency.contact}
-                  onChange={(e) =>
-                    handleAgencyChange('contact', e.target.value)
-                  }
-                />
-              </div>
-
-              <div className="grid gap-2">
-                <Label htmlFor="address">Endereço Geral</Label>
-                <Input
-                  id="address"
-                  value={form.address}
-                  onChange={(e) => handleChange('address', e.target.value)}
-                />
-              </div>
-
-              <div className="grid gap-2">
-                <Label htmlFor="contact">Contato</Label>
-                <Input
-                  id="contact"
-                  value={form.contact}
-                  onChange={(e) => handleChange('contact', e.target.value)}
-                />
-              </div>
+           
             </div>
 
             <DialogFooter>
