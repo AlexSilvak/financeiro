@@ -486,6 +486,10 @@ const data = {
           title: "Parâmetros",
           url: "/parametros",
         },
+        {
+          title: "Central de Cobrança",
+          url: "/parametros",
+        },
       ],
     },
     {
@@ -512,6 +516,10 @@ const data = {
       url: "#",
       icon: BookOpen,
       items: [
+         {
+          title: "Empresa",
+          url: "/companies",
+        },
         {
           title: "Usuários",
           url: "/usuarios",
